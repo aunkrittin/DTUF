@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.footer-container {
+  padding: 1rem;
+  background-color: #202529;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  height: 2.5cm;
+  width: 100%;
+}
+
+.App-container {
+  margin-top: 250px;
+  position: inherit;
+  justify-content: center;
+  align-items: center;
+}
