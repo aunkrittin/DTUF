@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../components/Auth";
 
 function Teacher() {
+  const { currentUser } = useContext(AuthContext);
+
+  if (!currentUser) {
+    return <Navigate to="/login" />;
+  }
+
   return (
     <div className="home-body mt-5">
       <Container>

@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
 
-function Student() {
+function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [loginStatus, setLoginStatus] = useState("");
+
+  const login = () => {
+    axios
+      .post("http://localhost:3001/login", {
+        username: username,
+        password: password,
+      })
+      .then((response) => {
+        if (response.data.message) {
+          setLoginStatus(response.data.message);
+        } else {
+          setLoginStatus(response.data[0].username);
+        }
+      });
+  };
+
   return (
     <div className="home-body mt-5">
       <Container>
@@ -9,24 +30,37 @@ function Student() {
           <Col>
             <Card className="p-5">
               <Card.Body>
-                <label htmlFor="name" className="form-label">
-                  Room
-                </label>
+                <h1>Login</h1>
                 <br />
+                <label htmlFor="username">Username:</label>
                 <input
-                  type="name"
-                  className="form-control"
-                  placeholder="Enter room name"
+                  type="text"
+                  placeholder="Username"
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
                 />
                 <br />
-                <Button className="btn btn-success">Enter</Button>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+                <br />
+                <label htmlFor="password">Password:</label>
+                <Button onClick={login} className="btn btn-success">
+                  Login
+                </Button>
               </Card.Body>
             </Card>
           </Col>
         </Row>
+        <h1>{loginStatus}</h1>
       </Container>
     </div>
   );
 }
 
-export default Student;
+export default Login;

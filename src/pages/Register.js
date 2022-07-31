@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
 
-function Student() {
-  const [firstnameReg, setFirstnameReg] = useState("");
-  const [lastnameReg, setLastnameReg] = useState("");
+function Register() {
+  const [fnameReg, setfnameReg] = useState("");
+  const [lnameReg, setlnameReg] = useState("");
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
   const [emailReg, setEmailReg] = useState("");
@@ -13,8 +13,8 @@ function Student() {
   const register = () => {
     axios
       .post("http://localhost:3001/register", {
-        firstname: firstnameReg,
-        lastname: lastnameReg,
+        fname: fnameReg,
+        lname: lnameReg,
         username: usernameReg,
         password: passwordReg,
         email: emailReg,
@@ -40,7 +40,7 @@ function Student() {
                   className="form-control"
                   placeholder="First name"
                   onChange={(e) => {
-                    setFirstnameReg(e.target.value);
+                    setfnameReg(e.target.value);
                   }}
                 />
                 <br />
@@ -50,7 +50,7 @@ function Student() {
                   className="form-control"
                   placeholder="Last name"
                   onChange={(e) => {
-                    setLastnameReg(e.target.value);
+                    setlnameReg(e.target.value);
                   }}
                 />
                 <br />
@@ -106,4 +106,4 @@ function Student() {
   );
 }
 
-export default Student;
+export default Register;
