@@ -17,6 +17,12 @@ function NavBar() {
             <Nav.Link className="nav-link" href="/teacher">
               Teacher
             </Nav.Link>
+            <Nav.Link className="nav-link" href="/login">
+              Login
+            </Nav.Link>
+            <Nav.Link className="nav-link" href="/register">
+              Register
+            </Nav.Link>
             {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
