@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Student from "./pages/Student";
 import Teacher from "./pages/Teacher";
+import Results from "./pages/Results";
 import { AuthProvider } from "./components/Auth";
 import "./App.css";
 // import Login from "./pages/Login";
@@ -19,17 +20,18 @@ function App() {
       <AuthProvider>
         <Router>
           <NavBar />
-          <Routes>
+          <Routes style={{ height: "500px" }}>
             {/* <Route path="/" element={<Home />} /> */}
             {/* <Route path="/forms" element={<Forms />} /> */}
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/dashboard" element={<Dashboard />} />
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/signup" element={<SignUp />} />
-            <Route exact path="/student" element={<Student />} />
-            <Route exact path="/teacher" element={<Teacher />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/student/:handle" element={<Student />} />
+            <Route path="/teacher" element={<Teacher />} />
+            <Route path="/results" element={<Results />} />
           </Routes>
-          <Footer />
+          {/* <Footer /> */}
         </Router>
       </AuthProvider>
     </div>

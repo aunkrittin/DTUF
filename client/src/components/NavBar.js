@@ -27,6 +27,9 @@ function NavBar() {
                 <Nav.Link className="nav-link" href="/teacher">
                   Teacher
                 </Nav.Link>
+                <Nav.Link className="nav-link" href="/results">
+                  Results
+                </Nav.Link>
                 <Nav.Link
                   className="nav-link"
                   onClick={() => firebaseConfig.auth().signOut()}
@@ -36,12 +39,12 @@ function NavBar() {
               </Nav>
             ) : (
               <Nav className="me-auto">
-                <Nav.Link className="nav-link" href="/login">
+                {/* <Nav.Link className="nav-link" href="/login">
                   Log In
                 </Nav.Link>
                 <Nav.Link className="nav-link" href="/signup">
                   Sign Up
-                </Nav.Link>
+                </Nav.Link> */}
               </Nav>
             )}
 

@@ -29,14 +29,14 @@ const SignUp = () => {
         <h1>Sign Up</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">
+            <label htmlFor="inputEmail" className="form-label">
               Email address
             </label>
             <input
               type="email"
               name="email"
               className="form-control"
-              id="exampleInputEmail1"
+              id="inputEmail"
               aria-describedby="emailHelp"
             />
             <div id="emailHelp" className="form-text">
@@ -44,14 +44,14 @@ const SignUp = () => {
             </div>
           </div>
           <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">
+            <label htmlFor="inputPassword" className="form-label">
               Password
             </label>
             <input
               type="password"
               name="password"
               className="form-control"
-              id="exampleInputPassword1"
+              id="inputPassword"
             />
           </div>
           <button type="submit" className="btn btn-primary">
