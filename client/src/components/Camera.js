@@ -24,7 +24,7 @@ const Camera = () => {
       <Webcam
         style={{ height: "0" }}
         ref={webcamRef}
-        audio={true}
+        audio={false}
         screenshotFormat="image/jpeg"
         videoConstraints={videoConstraints}
         onUserMedia={onUserMedia}
