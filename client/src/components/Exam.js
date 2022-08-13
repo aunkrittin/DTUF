@@ -5,7 +5,7 @@ import { Container, Card, Row, Col, Button } from "react-bootstrap";
 import Camera from "./Camera";
 import { doc, setDoc, arrayUnion } from "firebase/firestore";
 import { getFirestore } from "@firebase/firestore";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import Swal from "sweetalert2";
 const db = getFirestore(firebaseConfig);
 
@@ -13,6 +13,7 @@ function Exam(props) {
   const studentName = props.name;
   const { handle } = useParams();
   const roomId = handle;
+  const [finihed, setFinished] = useState();
 
   const finishTest = async () => {
     Swal.fire({
@@ -43,32 +44,37 @@ function Exam(props) {
           { merge: true }
         );
       }
+      setFinished("Hello");
     });
   };
 
   return (
     <>
-      <div className="home-body mt-0">
-        <Container>
-          <Row className="home-main-row">
-            <Col>
-              <Card className="">
-                <Card.Body>
-                  <iframe
-                    src="https://forms.gle/FApBwKGD7TZhyenh9"
-                    width="100%"
-                    height="750"
-                  ></iframe>
-                  <Button onClick={finishTest} className="btn btn-success">
-                    Finish
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-        <Camera />
-      </div>
+      {!finihed ? (
+        <div className="home-body mt-0">
+          <Container>
+            <Row className="home-main-row">
+              <Col>
+                <Card className="">
+                  <Card.Body>
+                    <iframe
+                      src="https://forms.gle/FApBwKGD7TZhyenh9"
+                      width="100%"
+                      height="750"
+                    ></iframe>
+                    <Button onClick={finishTest} className="btn btn-success">
+                      Finish
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+          <Camera />
+        </div>
+      ) : (
+        <Navigate to="/" />
+      )}
     </>
   );
 }
