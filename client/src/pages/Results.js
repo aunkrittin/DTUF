@@ -46,9 +46,11 @@ function Results() {
                 {roomsName.map((data) => {
                   return (
                     <div key={data.id}>
-                      <h3>Room Name: {data.room_name}</h3>
-                      <h3>Room ID: {data.id}</h3>
-                      <h3>Link: {data.gformLink}</h3>
+                      <h3 style={{ color: "red" }}>
+                        Room Name: {data.room_name}
+                      </h3>
+                      <h4 style={{ color: "green" }}>Room ID: {data.id}</h4>
+                      <h5>Link: {data.gformLink}</h5>
                     </div>
                   );
                 })}
