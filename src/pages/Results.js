@@ -9,6 +9,7 @@ import { getFirestore } from "@firebase/firestore";
 const db = getFirestore(firebaseConfig);
 
 function Results() {
+  // const roomID = props.roomID;
   const [roomsName, setRoomName] = useState([]);
   const roomsNameCollectionRef = collection(db, "rooms");
 
@@ -49,8 +50,15 @@ function Results() {
                       <h3 style={{ color: "red" }}>
                         Room Name: {data.room_name}
                       </h3>
-                      <h4 style={{ color: "green" }}>Room ID: {data.id}</h4>
-                      <h5>Link: {data.gformLink}</h5>
+                      {/* <h4 style={{ color: "green" }}>Room ID: {data.id}</h4> */}
+                      <h4>
+                        <a
+                          href="http://localhost:3000/student/"
+                          onClick="location.href = this.href+'data.id';return false;"
+                        >
+                          Link: http://localhost:3000/student/{data.id}
+                        </a>
+                      </h4>
                     </div>
                   );
                 })}

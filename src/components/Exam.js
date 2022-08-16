@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 const db = getFirestore(firebaseConfig);
 
 function Exam(props) {
+  const gFormLink = props.gURL;
   const studentName = props.name;
   const { handle } = useParams();
   const roomId = handle;
@@ -57,11 +58,7 @@ function Exam(props) {
               <Col>
                 <Card className="">
                   <Card.Body>
-                    <iframe
-                      src="https://forms.gle/FApBwKGD7TZhyenh9"
-                      width="100%"
-                      height="750"
-                    ></iframe>
+                    <iframe src={gFormLink} width="100%" height="750"></iframe>
                     <Button onClick={finishTest} className="btn btn-success">
                       Finish
                     </Button>

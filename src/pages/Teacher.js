@@ -5,6 +5,7 @@ import { AuthContext } from "../components/Auth";
 import { collection, addDoc } from "firebase/firestore";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
+import Exam from "../components/Exam";
 import Swal from "sweetalert2";
 const db = getFirestore(firebaseConfig);
 
@@ -33,6 +34,8 @@ function Teacher() {
         confirmButtonText: "Close",
       });
     }
+    // <Results gURL={gForm} />;
+    <Exam gURL={gForm} />;
   };
 
   const { currentUser } = useContext(AuthContext);
