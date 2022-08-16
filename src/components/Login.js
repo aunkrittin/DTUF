@@ -18,9 +18,38 @@ const Login = () => {
           text: "Please enter your email or password",
         });
       } else {
+        // if() {
+
+        // }
         firebaseConfig
           .auth()
-          .signInWithEmailAndPassword(email.value, password.value);
+          .signInWithEmailAndPassword(email.value, password.value)
+          .catch((error) => {
+            var errorCode = error.code;
+            var errorMsg = error.message;
+
+            if (errorCode === "auth/user-not-found") {
+              Swal.fire({
+                title: "Error",
+                icon: "error",
+                text: "Email was not found. Please try again",
+              });
+            } else if (errorCode === "auth/wrong-password") {
+              firebaseConfig
+                .auth()
+                .fetchProvidersForEmail(email.value, password.value)
+                .then((result) => {
+                  //
+                });
+              Swal.fire({
+                title: "Wrong password",
+                icon: "error",
+                text: "Passwords do not match!",
+              });
+            } else {
+              alert(errorMsg);
+            }
+          });
       }
     } catch (error) {
       alert(error);
