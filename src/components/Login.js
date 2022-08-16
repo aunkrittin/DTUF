@@ -3,17 +3,25 @@ import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { AuthContext } from "./Auth";
 import firebaseConfig from "../config";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const { email, password } = e.target.elements;
-
     try {
-      firebaseConfig
-        .auth()
-        .signInWithEmailAndPassword(email.value, password.value);
+      // console.log(email.value, password.value);
+      if (email.value === "" || password.value === "") {
+        Swal.fire({
+          title: "Error",
+          icon: "error",
+          text: "Please enter your email or password",
+        });
+      } else {
+        firebaseConfig
+          .auth()
+          .signInWithEmailAndPassword(email.value, password.value);
+      }
     } catch (error) {
       alert(error);
     }
@@ -21,6 +29,10 @@ const Login = () => {
 
   const { currentUser } = useContext(AuthContext);
   if (currentUser) {
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+    });
     return <Navigate to="/dashboard" />;
   }
 
@@ -61,14 +73,9 @@ const Login = () => {
             />
           </div>
           <div className="mb-3 form-check">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id="exampleCheck1"
-            />
-            <label className="form-check-label" htmlFor="exampleCheck1">
-              Remember me
-            </label>
+            <Link to="/resetpassword" style={{ TextDecoration: "none" }}>
+              Reset password
+            </Link>
           </div>
           <button
             type="submit"
