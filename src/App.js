@@ -9,6 +9,7 @@ import SignUp from "./components/SignUp";
 import Student from "./pages/Student";
 import Teacher from "./pages/Teacher";
 import Results from "./pages/Results";
+import Resetpassword from "./components/Resetpassword";
 import { AuthProvider } from "./components/Auth";
 import "./App.css";
 // import Login from "./pages/Login";
@@ -30,6 +31,7 @@ function App() {
             <Route path="/student/:handle" element={<Student />} />
             <Route path="/teacher" element={<Teacher />} />
             <Route path="/results" element={<Results />} />
+            <Route path="/resetpassword" element={<Resetpassword />} />
           </Routes>
           {/* <Footer /> */}
         </Router>
