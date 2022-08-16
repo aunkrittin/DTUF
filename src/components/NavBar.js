@@ -39,11 +39,8 @@ function NavBar() {
               </Nav>
             ) : (
               <Nav className="me-auto">
-                {/* <Nav.Link className="nav-link" href="/login">
-                  Log In
-                </Nav.Link>
-                <Nav.Link className="nav-link" href="/signup">
-                  Sign Up
+                {/* <Nav.Link className="nav-link" href="/student">
+                  Student
                 </Nav.Link> */}
               </Nav>
             )}
