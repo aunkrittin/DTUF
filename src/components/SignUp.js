@@ -15,23 +15,50 @@ const SignUp = () => {
           icon: "error",
           text: "Please enter your email or password",
         });
-      } else {
+      } else if (email.value && password.value) {
         firebaseConfig
           .auth()
-          .createUserWithEmailAndPassword(email.value, password.value);
-        setCurrentUser(true);
+          .createUserWithEmailAndPassword(email.value, password.value)
+          .then((result) => {
+            // return <Navigate to="/dashboard" />;
+            setCurrentUser(true);
+          })
+          .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            if (errorCode === "auth/email-already-in-use") {
+              // alert("You already have an account with that email.");
+              Swal.fire({
+                title: "Error",
+                icon: "error",
+                text: "Account already exists.",
+              });
+            } else if (errorCode === "auth/invalid-email") {
+              // alert("Please provide a valid email");
+              Swal.fire({
+                title: "Error",
+                icon: "error",
+                text: "Please fill a correct provide email",
+              });
+            } else if (errorCode === "auth/weak-password") {
+              // alert("The password is too weak.");
+              Swal.fire({
+                title: "Error",
+                icon: "error",
+                text: "The password is too weak!",
+              });
+            } else {
+              alert(errorMessage);
+            }
+          });
       }
     } catch (error) {
       alert(error);
     }
   };
   const [currentUser, setCurrentUser] = useState(null);
-
   if (currentUser) {
-    // Swal.fire({
-    //   title: "Success",
-    //   icon: "success",
-    // });
     return <Navigate to="/dashboard" />;
   }
 
