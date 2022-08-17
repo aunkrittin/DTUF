@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Container, Card, Row, Col, Button } from "react-bootstrap";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
