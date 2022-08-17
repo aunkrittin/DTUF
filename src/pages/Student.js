@@ -17,7 +17,7 @@ function Student() {
 
   useEffect(() => {
     setRoomId(handle);
-  });
+  }, []);
 
   const joinRoom = async () => {
     const studentsDocRef = doc(
@@ -26,7 +26,7 @@ function Student() {
       `${studentName}`
     );
     const dataDoc = await getDoc(doc(db, "rooms", roomId));
-    console.log(dataDoc);
+    // console.log("student:" + dataDoc);
     if (dataDoc.exists()) {
       await setDoc(
         studentsDocRef,
