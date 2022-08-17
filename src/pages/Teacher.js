@@ -13,6 +13,7 @@ function Teacher() {
   const [roomName, setRoomName] = useState("");
   const [gForm, setGForm] = useState("");
   const roomsCollectionRef = collection(db, "rooms");
+  const [timeDuration, setTimeDuration] = useState();
 
   const createRoom = async () => {
     if (roomName.trim() !== "" && gForm.trim() !== "") {
@@ -21,6 +22,7 @@ function Teacher() {
         gformLink: gForm.trim(),
         user_id: currentUser.uid,
         timestamp: new Date(),
+        timeDuration: parseInt(timeDuration),
       });
       Swal.fire({
         title: "Success",
@@ -78,6 +80,22 @@ function Teacher() {
                   }}
                   required
                 />
+                <br />
+                <br />
+                <label htmlFor="name" className="form-label">
+                  Exam time(minutes):
+                </label>
+                <br />
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="Exam Time in minutes"
+                  onChange={(e) => {
+                    setTimeDuration(e.target.value);
+                  }}
+                  required
+                />
+                <br />
                 <br />
                 <Button onClick={createRoom} className="btn btn-success">
                   Create
