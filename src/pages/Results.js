@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Card, Row, Col } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import firebaseConfig from "../config";
-import { getFirestore } from "@firebase/firestore";
+import { getFirestore, limit } from "@firebase/firestore";
 
 const db = getFirestore(firebaseConfig);
 
@@ -22,6 +22,7 @@ function Results() {
           orderBy("timestamp", "desc")
         )
       );
+      console.log(data);
       setRoomName(
         data.docs.map((doc) => ({
           ...doc.data(),
@@ -30,7 +31,7 @@ function Results() {
       );
     };
     getRoomName();
-  }, [roomsNameCollectionRef]);
+  }, []);
 
   const { currentUser } = useContext(AuthContext);
   if (!currentUser) {
@@ -50,14 +51,15 @@ function Results() {
                       <h3 style={{ color: "red" }}>
                         Room Name: {data.room_name}
                       </h3>
-                      {/* <h4 style={{ color: "green" }}>Room ID: {data.id}</h4> */}
+                      <h4 style={{ color: "green" }}>Room ID: {data.id}</h4>
                       <h4>
                         <a
-                          href="http://localhost:3000/student/"
-                          onClick="location.href = this.href+'data.id';return false;"
+                          style={{ textDecoration: "none" }}
+                          href={`http://localhost:3000/student/${data.id}`}
                         >
-                          Link: http://localhost:3000/student/{data.id}
+                          Join Room
                         </a>
+                        {/* <Link to={`/student/${data.id}`}>Room Link</Link> */}
                       </h4>
                     </div>
                   );

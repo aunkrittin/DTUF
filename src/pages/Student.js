@@ -26,7 +26,7 @@ function Student() {
       `${studentName}`
     );
     const dataDoc = await getDoc(doc(db, "rooms", roomId));
-    // console.log(dataDoc.exists());
+    console.log(dataDoc);
     if (dataDoc.exists()) {
       await setDoc(
         studentsDocRef,
@@ -57,7 +57,7 @@ function Student() {
 
   return (
     <>
-      {!currentUser ? (
+      {currentUser ? (
         <div className="home-body mt-5">
           {!joined && (
             <Container>

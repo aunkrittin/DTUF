@@ -3,14 +3,13 @@ import { AuthContext } from "./Auth";
 import firebaseConfig from "../config";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
 import Camera from "./Camera";
-import { doc, setDoc, arrayUnion } from "firebase/firestore";
+import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { getFirestore } from "@firebase/firestore";
 import { useParams, Navigate } from "react-router-dom";
 import Swal from "sweetalert2";
 const db = getFirestore(firebaseConfig);
 
 function Exam(props) {
-  const gFormLink = props.gURL;
   const studentName = props.name;
   const { handle } = useParams();
   const roomId = handle;
@@ -58,7 +57,7 @@ function Exam(props) {
               <Col>
                 <Card className="">
                   <Card.Body>
-                    <iframe src={gFormLink} width="100%" height="750"></iframe>
+                    <iframe src="" width="100%" height="750"></iframe>
                     <Button onClick={finishTest} className="btn btn-success">
                       Finish
                     </Button>
