@@ -1,6 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+// import { getStorage } from "firebase/storage";
 
 const firebaseConfig = firebase.initializeApp({
   // apiKey: "AIzaSyBme01MIh7uMD_ahKH3TiZVlVajz06lvFA",
@@ -16,5 +17,7 @@ const firebaseConfig = firebase.initializeApp({
   messagingSenderId: "750914451151",
   appId: "1:750914451151:web:81454b98d4e34807fd29ba",
 });
+
+// const storage = getStorage(firebaseConfig);
 
 export default firebaseConfig;
