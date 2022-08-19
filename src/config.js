@@ -4,12 +4,6 @@ import "firebase/compat/firestore";
 // import { getStorage } from "firebase/storage";
 
 const firebaseConfig = firebase.initializeApp({
-  // apiKey: "AIzaSyBme01MIh7uMD_ahKH3TiZVlVajz06lvFA",
-  // authDomain: "react-auth-f1deb.firebaseapp.com",
-  // projectId: "react-auth-f1deb",
-  // storageBucket: "react-auth-f1deb.appspot.com",
-  // messagingSenderId: "847233287551",
-  // appId: "1:847233287551:web:7522c96577e1d7cbebc64a",
   apiKey: "AIzaSyBe6eNw9EKPmZuN4RZ4th1110Y_zuxJ2-A",
   authDomain: "react-testing-3b37a.firebaseapp.com",
   projectId: "react-testing-3b37a",
