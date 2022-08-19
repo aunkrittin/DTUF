@@ -1,8 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Card, Row, Col, Table, Button } from "react-bootstrap";
-import { Navigate, useNavigate, Link } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
 
@@ -12,30 +19,47 @@ const db = getFirestore(firebaseConfig);
 
 function Results() {
   let navigate = useNavigate();
-  // const roomID = props.roomID;
   const [roomsData, setRoomsData] = useState([]);
   const roomsNameCollectionRef = collection(db, "rooms");
 
+  function detail(id) {
+    navigate(`/detail/${id}`, { replace: true });
+  }
+
   async function getRoomData() {
-    const data = await getDocs(
+    const data = await onSnapshot(
       query(
         roomsNameCollectionRef,
         where("user_id", "==", `${currentUser.uid}`),
         orderBy("timestamp", "desc")
       )
     );
-    // console.log(data);
-    setRoomsData(
-      data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }))
-    );
+    //   // console.log(data);
+    // setRoomsData(
+    //   data.docs.map((doc) => ({
+    //     ...doc.data(),
+    //     id: doc.id,
+    //   }))
+    // );
   }
+
+  // useEffect(
+  //   () =>
+  //     onSnapshot(collection(db, "rooms"), (snapshot) =>
+  //       setRoomData(
+  //         snapshot.docs.map((doc) => {
+  //           let data = doc.data();
+  //           //console.log(data.month);
+  //           return { id: doc.id, ...data };
+  //         })
+  //       )
+  //     ),
+  //   []
+  // );
 
   useEffect(() => {
     getRoomData();
-  }, [getRoomData]);
+  });
 
   function onDelete(id) {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -65,6 +89,7 @@ function Results() {
           );
           const db = firebaseConfig.firestore();
           db.collection("rooms").doc(id).delete();
+          return navigate("/results", { replace: true });
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -96,7 +121,7 @@ function Results() {
                     <tr>
                       <th>Room Name</th>
                       <th>Room ID</th>
-                      <th>Time(minutes)</th>
+                      <th>Time (minutes)</th>
                       <th>Link</th>
                       <th>Details</th>
                       <th>Delete</th>
@@ -123,9 +148,7 @@ function Results() {
                           </td>
                           <td>
                             <Button
-                              onClick={() =>
-                                navigate("/details", { replace: true })
-                              }
+                              onClick={() => detail(data.id)}
                               className="btn btn-success"
                             >
                               Details
@@ -144,29 +167,6 @@ function Results() {
                     })}
                   </tbody>
                 </Table>
-                {roomsData.map((data) => {
-                  //   return (
-                  //     <div key={data.id}>
-                  //       <h3 style={{ color: "red" }}>
-                  //         Room Name: {data.room_name}
-                  //       </h3>
-                  //       <h4 style={{ color: "green" }}>Room ID: {data.id}</h4>
-                  //       <h4 style={{ color: "hotpink" }}>
-                  //         Time: {data.timeDuration} Minutes
-                  //       </h4>
-                  //       <h4>
-                  //         <a
-                  //           style={{ textDecoration: "none" }}
-                  //           href={`http://localhost:3000/student/${data.id}`}
-                  //         >
-                  //           Join Room
-                  //         </a>
-                  //         {/* <Link to={`/student/${data.id}`}>Room Link</Link> */}
-                  //       </h4>
-                  //     </div>
-                  //   );
-                  // }
-                })}
               </Card.Body>
             </Card>
           </Col>
