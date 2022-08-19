@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
 import { collection, addDoc } from "firebase/firestore";
 import firebaseConfig from "../config";
@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 const db = getFirestore(firebaseConfig);
 
 function Teacher() {
+  let navigate = useNavigate();
   const [roomName, setRoomName] = useState("");
   const [gForm, setGForm] = useState("");
   const roomsCollectionRef = collection(db, "rooms");
@@ -28,6 +29,7 @@ function Teacher() {
         title: "Success",
         icon: "success",
       });
+      navigate("/results", { replace: true });
     } else {
       Swal.fire({
         title: "Error!",
