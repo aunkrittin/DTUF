@@ -22,44 +22,50 @@ function Results() {
   const [roomsData, setRoomsData] = useState([]);
   const roomsNameCollectionRef = collection(db, "rooms");
 
-  function detail(id) {
-    navigate(`/detail/${id}`, { replace: true });
+  function details(id) {
+    navigate(`/details/${id}`, { replace: true });
   }
+
+  // async function getRoomData() {
+  //   console.log("asdasdasd");
+  //   const data = await getDocs(
+  //     query(
+  //       roomsNameCollectionRef,
+  //       where("user_id", "==", `${currentUser.uid}`),
+  //       orderBy("timestamp", "desc")
+  //     )
+  //   );
+  //   //   // console.log(data);
+  //   setRoomsData(
+  //     data.docs.map((doc) => ({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     }))
+  //   );
+  // }
 
   async function getRoomData() {
-    const data = await onSnapshot(
-      query(
-        roomsNameCollectionRef,
-        where("user_id", "==", `${currentUser.uid}`),
-        orderBy("timestamp", "desc")
-      )
+    const data = await query(
+      roomsNameCollectionRef,
+      where("user_id", "==", `${currentUser.uid}`),
+      orderBy("timestamp", "desc")
     );
-    //   // console.log(data);
-    // setRoomsData(
-    //   data.docs.map((doc) => ({
-    //     ...doc.data(),
-    //     id: doc.id,
-    //   }))
-    // );
-  }
+    console.log(data);
 
-  // useEffect(
-  //   () =>
-  //     onSnapshot(collection(db, "rooms"), (snapshot) =>
-  //       setRoomData(
-  //         snapshot.docs.map((doc) => {
-  //           let data = doc.data();
-  //           //console.log(data.month);
-  //           return { id: doc.id, ...data };
-  //         })
-  //       )
-  //     ),
-  //   []
-  // );
+    onSnapshot(data, (snapshot) => {
+      setRoomsData(
+        snapshot.docs.map((doc) => {
+          let data = doc.data();
+          console.log(data);
+          return { id: doc.id, ...data };
+        })
+      );
+    });
+  }
 
   useEffect(() => {
     getRoomData();
-  });
+  }, []);
 
   function onDelete(id) {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -148,7 +154,7 @@ function Results() {
                           </td>
                           <td>
                             <Button
-                              onClick={() => detail(data.id)}
+                              onClick={() => details(data.id)}
                               className="btn btn-success"
                             >
                               Details
