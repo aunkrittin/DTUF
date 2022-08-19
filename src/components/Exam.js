@@ -96,6 +96,10 @@ function Exam(props) {
       canvas.height = video.videoHeight;
 
       const timer = setTimeout(async () => {
+        canvas
+          .getContext("2d")
+          .drawImage(video, 0, 0, canvas.width, canvas.height);
+
         const switchingTab = doc(
           db,
           `rooms/${roomId}/students_join_room`,
@@ -111,14 +115,11 @@ function Exam(props) {
           },
           { merge: true }
         );
-        canvas
-          .getContext("2d")
-          .drawImage(video, 0, 0, canvas.width, canvas.height);
+
         let imageData = canvas.toDataURL();
-        // console.log(imageData);
         setImageUpload(imageData);
         uploadImage();
-      }, 3000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   };
@@ -146,6 +147,10 @@ function Exam(props) {
               `rooms/${roomId}/students_join_room`,
               `${studentName}`
             );
+            function trustScore() {
+              let tScore = 100;
+              return tScore;
+            }
             await setDoc(
               studentsDocRef,
               {
@@ -153,6 +158,7 @@ function Exam(props) {
                   action: "leave_room",
                   timestamp: new Date(),
                 }),
+                trust_score: trustScore(),
               },
               { merge: true }
             );
@@ -196,6 +202,10 @@ function Exam(props) {
           `rooms/${roomId}/students_join_room`,
           `${studentName}`
         );
+        function trustScore() {
+          let tScore = 100;
+          return tScore;
+        }
         await setDoc(
           studentsDocRef,
           {
@@ -203,11 +213,13 @@ function Exam(props) {
               action: "leave_room",
               timestamp: new Date(),
             }),
+            trust_score: trustScore(),
           },
           { merge: true }
         );
         setFinished("Hello");
       }
+      stopCapture();
     });
   };
 
