@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { AuthContext } from "./Auth";
 import firebaseConfig from "../config";
 import Swal from "sweetalert2";
 
 const Login = () => {
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const { email, password } = e.target.elements;
@@ -61,8 +62,9 @@ const Login = () => {
     Swal.fire({
       title: "Success",
       icon: "success",
+    }).then(() => {
+      navigate("/", { replace: true });
     });
-    return <Navigate to="/dashboard" />;
   }
 
   return (
