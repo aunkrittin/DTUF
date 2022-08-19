@@ -52,6 +52,9 @@ function Results() {
                         Room Name: {data.room_name}
                       </h3>
                       <h4 style={{ color: "green" }}>Room ID: {data.id}</h4>
+                      <h4 style={{ color: "hotpink" }}>
+                        Time: {data.timeDuration} Minutes
+                      </h4>
                       <h4>
                         <a
                           style={{ textDecoration: "none" }}
