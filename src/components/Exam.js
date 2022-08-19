@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 import firebaseConfig from "../config";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
-import Camera from "./Camera";
-import ScreenCapture from "./ScreenCapture";
+// import Camera from "./Camera";
 import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { getFirestore } from "@firebase/firestore";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import PageVisibility from "react-page-visibility";
-// import storage from "../config";
 import { ref, getStorage, uploadString } from "firebase/storage";
 import { v4 } from "uuid";
 const db = getFirestore(firebaseConfig);
 
 function Exam(props) {
+  let navigate = useNavigate();
   const storage = getStorage();
   const studentName = props.name;
   const { handle } = useParams();
@@ -58,6 +57,15 @@ function Exam(props) {
         console.error(`Error:${err}`);
         return null;
       });
+  };
+
+  const stopCapture = () => {
+    if (window.stream) {
+      window.stream.getTracks().forEach((track) => {
+        track.stop();
+      });
+      window.stream = null;
+    }
   };
 
   const handleVisibilityChange = async (isVisible) => {
@@ -118,23 +126,44 @@ function Exam(props) {
   function getData() {
     getDoc(doc(db, "rooms", roomId)).then((data) => {
       const roomData = data.data();
-
       // console.log(data.data());
       // setTimeCount(data.data());
       setgformLink(roomData.gformLink);
-
       let seconds = roomData.timeDuration * 60; // แปลงนาทีเป็น วินาที
       const interval = setInterval(() => {
-        // console.log("This will run every second!");
         let hours = Math.floor(seconds / 3600);
         let minutes = Math.floor((seconds % 3600) / 60);
         let sec = Math.floor((seconds % 3600) % 60);
+        // console.log("This will run every second!");
 
         // console.log(`${hours} : ${minutes} : ${sec}`);
         seconds = seconds - 1;
         setTimeDisplay(`${hours} : ${minutes} : ${sec}`);
+        if (hours === 0 && minutes === 0 && sec === 0) {
+          const forceFinish = async () => {
+            const studentsDocRef = doc(
+              db,
+              `rooms/${roomId}/students_join_room`,
+              `${studentName}`
+            );
+            await setDoc(
+              studentsDocRef,
+              {
+                activities: arrayUnion({
+                  action: "leave_room",
+                  timestamp: new Date(),
+                }),
+              },
+              { merge: true }
+            );
+            setFinished("Hello");
+          };
+          stopCapture();
+          forceFinish();
+        }
         // setTimeCount((timeCount) => seconds - 1);
       }, 1000);
+
       return () => clearInterval(interval);
     });
   }
@@ -142,8 +171,6 @@ function Exam(props) {
   useEffect(() => {
     startCapture(StreamConstraints);
     getData();
-
-    // getRoomData();
   }, []);
 
   //const dataDoc =  getDoc(doc(db, "rooms", roomId));
@@ -187,7 +214,7 @@ function Exam(props) {
   return (
     <>
       <PageVisibility onChange={handleVisibilityChange}></PageVisibility>
-      {!finihed || timeDisplay !== "00:00:00" ? (
+      {!finihed ? (
         <div className="home-body mt-0">
           <video playsInline autoPlay hidden></video>
           <canvas hidden></canvas>
