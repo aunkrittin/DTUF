@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import firebaseConfig from "../config";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     const { email, password } = e.target.elements;
@@ -61,8 +62,9 @@ const SignUp = () => {
     Swal.fire({
       title: "Success",
       icon: "success",
+    }).then((result) => {
+      navigate("/", { replace: true });
     });
-    return <Navigate to="/dashboard" />;
   }
 
   return (
