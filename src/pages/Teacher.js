@@ -28,8 +28,9 @@ function Teacher() {
       Swal.fire({
         title: "Success",
         icon: "success",
+      }).then(() => {
+        navigate("/results", { replace: true });
       });
-      navigate("/results", { replace: true });
     } else {
       Swal.fire({
         title: "Error!",
