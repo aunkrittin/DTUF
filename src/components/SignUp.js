@@ -20,7 +20,6 @@ const SignUp = () => {
           .auth()
           .createUserWithEmailAndPassword(email.value, password.value)
           .then((result) => {
-            // return <Navigate to="/dashboard" />;
             setCurrentUser(true);
           })
           .catch((error) => {
@@ -59,6 +58,10 @@ const SignUp = () => {
   };
   const [currentUser, setCurrentUser] = useState(null);
   if (currentUser) {
+    Swal.fire({
+      title: "Success",
+      icon: "success",
+    });
     return <Navigate to="/dashboard" />;
   }
 
