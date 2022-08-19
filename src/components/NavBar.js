@@ -21,9 +21,9 @@ function NavBar() {
           <Navbar.Collapse id="basic-navbar-nav">
             {currentUser ? (
               <Nav className="me-auto">
-                <Nav.Link className="nav-link" href="/student">
+                {/* <Nav.Link className="nav-link" href="/student">
                   Student
-                </Nav.Link>
+                </Nav.Link> */}
                 <Nav.Link className="nav-link" href="/teacher">
                   Teacher
                 </Nav.Link>
