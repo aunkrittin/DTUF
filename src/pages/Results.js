@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Card, Row, Col, Table, Button } from "react-bootstrap";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
 import {
   collection,
@@ -130,24 +130,21 @@ function Results() {
                               <td>{data.timeDuration}</td>
                               <td>{date}</td>
                               <td>
-                                <Button
-                                  onClick={() =>
-                                    navigate(`/student/${data.id}`, {
-                                      replace: true,
-                                    })
-                                  }
+                                <Link
+                                  to={`/student/${data.id}`}
                                   style={{ textDecoration: "none" }}
+                                  className="btn btn-primary"
                                 >
                                   Join Room
-                                </Button>
+                                </Link>
                               </td>
                               <td>
-                                <Button
-                                  onClick={() => details(data.id)}
+                                <Link
+                                  to={`/details/${data.id}`}
                                   className="btn btn-success"
                                 >
                                   Details
-                                </Button>
+                                </Link>
                               </td>
                               <td>
                                 <Button
