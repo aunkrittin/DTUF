@@ -4,7 +4,6 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
 import {
   collection,
-  getDocs,
   orderBy,
   query,
   where,
@@ -21,28 +20,11 @@ function Results() {
   let navigate = useNavigate();
   const [roomsData, setRoomsData] = useState([]);
   const roomsNameCollectionRef = collection(db, "rooms");
+  const [roomsFound, setRoomsFound] = useState("test");
 
   function details(id) {
-    navigate(`/details/${id}`, { replace: true });
+    return navigate(`/details/${id}`, { replace: true });
   }
-
-  // async function getRoomData() {
-  //   console.log("asdasdasd");
-  //   const data = await getDocs(
-  //     query(
-  //       roomsNameCollectionRef,
-  //       where("user_id", "==", `${currentUser.uid}`),
-  //       orderBy("timestamp", "desc")
-  //     )
-  //   );
-  //   //   // console.log(data);
-  //   setRoomsData(
-  //     data.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     }))
-  //   );
-  // }
 
   async function getRoomData() {
     const data = await query(
@@ -50,7 +32,7 @@ function Results() {
       where("user_id", "==", `${currentUser.uid}`),
       orderBy("timestamp", "desc")
     );
-    console.log(data);
+    // console.log(data);
 
     onSnapshot(data, (snapshot) => {
       setRoomsData(
@@ -61,6 +43,7 @@ function Results() {
         })
       );
     });
+    setRoomsFound(true);
   }
 
   useEffect(() => {
@@ -95,7 +78,7 @@ function Results() {
           );
           const db = firebaseConfig.firestore();
           db.collection("rooms").doc(id).delete();
-          return navigate("/results", { replace: true });
+          // return navigate("/results", { replace: true });
         } else if (
           /* Read more about handling dismissals below */
           result.dismiss === Swal.DismissReason.cancel
@@ -115,70 +98,106 @@ function Results() {
   }
 
   return (
-    <div className="home-body mt-3">
-      <Container>
-        <Row className="home-main-row">
-          <Col>
-            <Card className="p-3">
-              <h1>Rooms</h1>
-              <Card.Body>
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>Room Name</th>
-                      <th>Room ID</th>
-                      <th>Time (minutes)</th>
-                      <th>Link</th>
-                      <th>Details</th>
-                      <th>Delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {roomsData.map((data) => {
-                      return (
-                        <tr key={data.id}>
-                          <td>{data.room_name}</td>
-                          <td>{data.id}</td>
-                          <td>{data.timeDuration}</td>
-                          <td>
-                            <Button
-                              onClick={() =>
-                                navigate(`/student/${data.id}`, {
-                                  replace: true,
-                                })
-                              }
-                              style={{ textDecoration: "none" }}
-                            >
-                              Join Room
-                            </Button>
-                          </td>
-                          <td>
-                            <Button
-                              onClick={() => details(data.id)}
-                              className="btn btn-success"
-                            >
-                              Details
-                            </Button>
-                          </td>
-                          <td>
-                            <Button
-                              variant="danger"
-                              onClick={() => onDelete(data.id)}
-                            >
-                              Delete Room
-                            </Button>
-                          </td>
+    <>
+      {roomsFound ? (
+        <div className="home-body mt-3">
+          <Container>
+            <Row className="home-main-row">
+              <Col>
+                <Card className="p-3">
+                  <h1>Rooms</h1>
+                  <Card.Body>
+                    <Table striped bordered hover>
+                      <thead>
+                        <tr>
+                          <th>Room Name</th>
+                          <th>Room ID</th>
+                          <th>Time (minutes)</th>
+                          <th>Created At</th>
+                          <th>Link</th>
+                          <th>Details</th>
+                          <th>Delete</th>
                         </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+                      </thead>
+                      <tbody>
+                        {roomsData.map((data) => {
+                          // console.log(data.timestamp);
+                          const date = data.timestamp.toDate().toDateString();
+                          return (
+                            <tr key={data.id}>
+                              <td>{data.room_name}</td>
+                              <td>{data.id}</td>
+                              <td>{data.timeDuration}</td>
+                              <td>{date}</td>
+                              <td>
+                                <Button
+                                  onClick={() =>
+                                    navigate(`/student/${data.id}`, {
+                                      replace: true,
+                                    })
+                                  }
+                                  style={{ textDecoration: "none" }}
+                                >
+                                  Join Room
+                                </Button>
+                              </td>
+                              <td>
+                                <Button
+                                  onClick={() => details(data.id)}
+                                  className="btn btn-success"
+                                >
+                                  Details
+                                </Button>
+                              </td>
+                              <td>
+                                <Button
+                                  variant="danger"
+                                  onClick={() => onDelete(data.id)}
+                                >
+                                  Delete Room
+                                </Button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      ) : (
+        <div className="home-body mt-3">
+          <Container>
+            <Row className="home-main-row">
+              <Col>
+                <Card className="p-3">
+                  <h1>Rooms</h1>
+                  <Card.Body>
+                    <Table striped bordered hover>
+                      <thead>
+                        <tr>
+                          <th>Room Name</th>
+                          <th>Room ID</th>
+                          <th>Time (minutes)</th>
+                          <th>Created At</th>
+                          <th>Link</th>
+                          <th>Details</th>
+                          <th>Delete</th>
+                        </tr>
+                      </thead>
+                    </Table>
+                    <h1>Rooms not found</h1>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      )}
+    </>
   );
 }
 
