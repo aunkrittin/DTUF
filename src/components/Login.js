@@ -60,8 +60,9 @@ const Login = () => {
   const { currentUser } = useContext(AuthContext);
   if (currentUser) {
     Swal.fire({
-      title: "Success",
+      title: "Login success",
       icon: "success",
+      text: "You have successfully logged in",
     }).then(() => {
       navigate("/", { replace: true });
     });
