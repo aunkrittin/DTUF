@@ -10,6 +10,7 @@ import Student from "./pages/Student";
 import Teacher from "./pages/Teacher";
 import Results from "./pages/Results";
 import Details from "./pages/Details";
+import Evidences from "./pages/Evidences";
 import Resetpassword from "./components/Resetpassword";
 import { AuthProvider } from "./components/Auth";
 import "./App.css";
@@ -34,6 +35,7 @@ function App() {
             <Route path="/results" element={<Results />} />
             <Route path="/resetpassword" element={<Resetpassword />} />
             <Route path="/details/:handle" element={<Details />} />
+            <Route path="/details/:handle/:handle2" element={<Evidences />} />
           </Routes>
           {/* <Footer /> */}
         </Router>
