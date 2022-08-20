@@ -60,8 +60,9 @@ const SignUp = () => {
   const [currentUser, setCurrentUser] = useState(null);
   if (currentUser) {
     Swal.fire({
-      title: "Success",
+      title: "Signup success",
       icon: "success",
+      text: "You have successfully registered",
     }).then((result) => {
       navigate("/", { replace: true });
     });
