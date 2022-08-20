@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Card, Row, Col, Table, Button } from "react-bootstrap";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
 import { collection, onSnapshot } from "firebase/firestore";
 import firebaseConfig from "../config";
@@ -19,9 +19,9 @@ function Details() {
     `rooms/${roomID}/students_join_room`
   );
 
-  function evidences(id) {
-    return navigate(`/details/${roomID}/${id}`, { replace: true });
-  }
+  // function evidences(id) {
+  //   return navigate(`/details/${roomID}/${id}`, { replace: true });
+  // }
 
   function getStudentData() {
     onSnapshot(studentDataCollectionRef, (snapshot) => {
@@ -65,8 +65,8 @@ function Details() {
                         <tr>
                           <th>Student Name</th>
                           <th>Trust Score</th>
-                          <th>Join Room</th>
-                          <th>Leave Room</th>
+                          <th>Join Room (24Hr)</th>
+                          <th>Leave Room (24Hr)</th>
                           <th>Evidences</th>
                         </tr>
                       </thead>
@@ -79,24 +79,26 @@ function Details() {
                               <td>
                                 {data.activities
                                   .filter(
-                                    (joinTime) => joinTime.action == "join_room"
+                                    (joinTime) =>
+                                      joinTime.action === "join_room"
                                   )
                                   .map((filteredJoin) => {
-                                    let date =
+                                    let time =
                                       filteredJoin.timestamp.toMillis();
-                                    let time = new Date(date);
+                                    let date = new Date(time);
+
                                     let newDate =
-                                      time.getDate() +
-                                      "/" +
-                                      (time.getMonth() + 1) +
-                                      "/" +
-                                      time.getFullYear() +
-                                      " " +
-                                      time.getHours() +
+                                      // date.getDate() +
+                                      // "/" +
+                                      // (date.getMonth() + 1) +
+                                      // "/" +
+                                      // date.getFullYear() +
+                                      // " " +
+                                      date.getHours() +
                                       ":" +
-                                      time.getMinutes() +
+                                      date.getMinutes() +
                                       ":" +
-                                      time.getSeconds();
+                                      date.getSeconds();
                                     // console.log(newDate);
                                     return newDate;
                                   })}
@@ -105,19 +107,20 @@ function Details() {
                                 {data.activities
                                   .filter(
                                     (leaveTime) =>
-                                      leaveTime.action == "leave_room"
+                                      leaveTime.action === "leave_room"
                                   )
                                   .map((filteredLeave) => {
                                     let date =
                                       filteredLeave.timestamp.toMillis();
                                     let time = new Date(date);
+                                    console.log(time);
                                     let newDate =
-                                      time.getDate() +
-                                      "/" +
-                                      (time.getMonth() + 1) +
-                                      "/" +
-                                      time.getFullYear() +
-                                      " " +
+                                      // time.getDate() +
+                                      // "/" +
+                                      // (time.getMonth() + 1) +
+                                      // "/" +
+                                      // time.getFullYear() +
+                                      // " " +
                                       time.getHours() +
                                       ":" +
                                       time.getMinutes() +
@@ -128,18 +131,25 @@ function Details() {
                                   })}
                               </td>
                               <td>
-                                <Button
-                                  onClick={() => evidences(data.id)}
+                                <Link
+                                  to={`/details/${roomID}/${data.id}`}
                                   className="btn btn-success"
                                 >
                                   Evidences
-                                </Button>
+                                </Link>
                               </td>
                             </tr>
                           );
                         })}
                       </tbody>
                     </Table>
+                    <Button
+                      onClick={() => navigate(-1)}
+                      className="btn btn-danger"
+                      style={{ marginRight: "5px" }}
+                    >
+                      Back
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
@@ -164,6 +174,13 @@ function Details() {
                       </thead>
                     </Table>
                     <h1>Students Not Found</h1>
+                    <Button
+                      onClick={() => navigate(-1)}
+                      className="btn btn-danger"
+                      style={{ marginRight: "5px" }}
+                    >
+                      Back
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
