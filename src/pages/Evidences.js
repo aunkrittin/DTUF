@@ -3,12 +3,13 @@ import { Container, Card, Row, Col, Table, Button } from "react-bootstrap";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
 import {
-  query,
-  where,
   onSnapshot,
-  doc,
+  getDocs,
   getDoc,
   collection,
+  query,
+  orderBy,
+  doc,
 } from "firebase/firestore";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
@@ -22,27 +23,46 @@ function Evidences() {
   let navigate = useNavigate();
   const [eviData, setEviData] = useState([]);
   const [foundData, setFoundData] = useState("test");
-  const studentEviCollectionRef = collection(
+  const studentEviCollectionRef = doc(
     db,
-    `rooms/${roomID}/students_join_room/`
+    "rooms",
+    `${roomID}`,
+    "students_join_room",
+    `${studentName}`
   );
+  // const studentEviCollectionRef = collection(
+  //   db,
+  //   `rooms/${roomID}/students_join_room`
+  // );
 
-  //   console.log(studentEviCollectionRef);
+  // console.log(studentEviCollectionRef);
+
+  // async function getEviData() {
+  //   onSnapshot(studentEviCollectionRef, (snapshot) => {
+  //     if (snapshot.docs.length === 0) {
+  //       return console.log("Not Found Data");
+  //     } else {
+  //       setEviData(
+  //         snapshot.docs.map((doc) => {
+  //           let data = doc.data();
+  //           // console.log(`data: ${data}`);
+  //           return { id: doc.id, ...data };
+  //         })
+  //       );
+  //     }
+  //   });
+  //   setFoundData(true);
+  // }
 
   async function getEviData() {
-    onSnapshot(studentEviCollectionRef, (snapshot) => {
-      if (snapshot.docs.length === 0) {
-        return console.log("Not Found Data");
-      } else {
-        setEviData(
-          snapshot.docs.map((doc) => {
-            let data = doc.data();
-            // console.log(`data: ${data}`);
-            return { id: doc.id, ...data };
-          })
-        );
-      }
-    });
+    try {
+      const docSnap = await getDoc(studentEviCollectionRef);
+      let data = docSnap.data();
+      // console.log(data.activities);
+      setEviData(data);
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
     setFoundData(true);
   }
 
@@ -68,31 +88,44 @@ function Evidences() {
                     <Table striped bordered hover size="sm">
                       <thead>
                         <tr>
-                          <th>Join</th>
-                          <th>Leave</th>
+                          <th>Actions</th>
+                          <th>Time</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {eviData.map((data) => {
-                          {
+                        {(eviData.activities || [])
+                          .filter((visible) => visible.action === "hidden")
+                          .map((data) => {
+                            let time = data.timestamp.toMillis();
+                            let date = new Date(time);
+                            let newDate =
+                              // date.getDate() +
+                              // "/" +
+                              // (date.getMonth() + 1) +
+                              // "/" +
+                              // date.getFullYear() +
+                              // " " +
+                              date.getHours() +
+                              ":" +
+                              date.getMinutes() +
+                              ":" +
+                              date.getSeconds();
                             return (
                               <tr key={data.id}>
-                                <td>
-                                  {data.activities
-                                    .filter(
-                                      (join) => join.action == "join_room"
-                                    )
-                                    .map((filteredJoin) => {
-                                      return filteredJoin.action;
-                                    })}
-                                </td>
-                                <td></td>
+                                <td>{data.action}</td>
+                                <td>{newDate}</td>
                               </tr>
                             );
-                          }
-                        })}
+                          })}
                       </tbody>
                     </Table>
+                    <Button
+                      onClick={() => navigate(-1)}
+                      className="btn btn-danger"
+                      style={{ marginRight: "5px" }}
+                    >
+                      Back
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
@@ -110,13 +143,20 @@ function Evidences() {
                     <Table striped bordered hover size="sm">
                       <thead>
                         <tr>
-                          <th>Join</th>
-                          <th>Leave</th>
+                          <th>Visible</th>
+                          <th>Hidden</th>
                         </tr>
                       </thead>
                       {/* <tbody></tbody> */}
                     </Table>
                     <h1>Evidences Not Found</h1>
+                    <Button
+                      onClick={() => navigate(-1)}
+                      className="btn btn-danger"
+                      style={{ marginRight: "5px" }}
+                    >
+                      Back
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
