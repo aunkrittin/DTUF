@@ -13,19 +13,19 @@ function Student() {
   const { handle } = useParams();
   const [joined, setJoined] = useState();
   const [studentName, setStudentName] = useState();
-  const [roomId, setRoomId] = useState();
+  const [roomID, setroomID] = useState();
 
   useEffect(() => {
-    setRoomId(handle);
+    setroomID(handle);
   }, []);
 
   const joinRoom = async () => {
     const studentsDocRef = doc(
       db,
-      `rooms/${roomId}/students_join_room`,
+      `rooms/${roomID}/students_join_room`,
       `${studentName}`
     );
-    const dataDoc = await getDoc(doc(db, "rooms", roomId));
+    const dataDoc = await getDoc(doc(db, "rooms", roomID));
     // console.log("student:" + dataDoc);
     if (dataDoc.exists()) {
       await setDoc(
@@ -38,7 +38,7 @@ function Student() {
         },
         { merge: true }
       );
-      setJoined("asdas123123123123d");
+      setJoined(true);
     } else {
       Swal.fire({
         title: "Error!",
@@ -74,7 +74,7 @@ function Student() {
                         className="form-control"
                         placeholder="Enter room name"
                         onChange={(e) => {
-                          setRoomId(e.target.value);
+                          setroomID(e.target.value);
                         }}
                         defaultValue={handle}
                       />
