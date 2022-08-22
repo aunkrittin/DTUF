@@ -23,22 +23,27 @@ function Details() {
   //   return navigate(`/details/${roomID}/${id}`, { replace: true });
   // }
 
-  function getStudentData() {
-    onSnapshot(studentDataCollectionRef, (snapshot) => {
-      // console.log(snapshot.docs);
-      if (snapshot.docs.length === 0) {
-        return console.log("Data not found");
-      } else {
-        setStudentsData(
-          snapshot.docs.map((doc) => {
-            let data = doc.data();
-            // console.log(data);
-            return { id: doc.id, ...data };
-          })
-        );
-        setFoundData(true);
-      }
-    });
+  async function getStudentData() {
+    try {
+      await onSnapshot(studentDataCollectionRef, (snapshot) => {
+        // console.log(snapshot.docs);
+        if (snapshot.docs.length === 0) {
+          setFoundData(false);
+          return console.log("Data not found");
+        } else {
+          setStudentsData(
+            snapshot.docs.map((doc) => {
+              let data = doc.data();
+              console.log(data);
+              setFoundData(true);
+              return { id: doc.id, ...data };
+            })
+          );
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -65,8 +70,8 @@ function Details() {
                         <tr>
                           <th>Student Name</th>
                           <th>Trust Score</th>
-                          <th>Join Room (24Hr)</th>
-                          <th>Leave Room (24Hr)</th>
+                          {/* <th>Join Room (24Hr)</th>
+                          <th>Leave Room (24Hr)</th> */}
                           <th>Evidences</th>
                         </tr>
                       </thead>
@@ -76,11 +81,11 @@ function Details() {
                             <tr key={data.id}>
                               <td>{data.id}</td>
                               <td>{data.trust_score}</td>
-                              <td>
+                              {/* <td>
                                 {data.activities
                                   .filter(
                                     (joinTime) =>
-                                      joinTime.action === "join_room"
+                                      joinTime.action === "Join"
                                   )
                                   .map((filteredJoin) => {
                                     let time =
@@ -107,7 +112,7 @@ function Details() {
                                 {data.activities
                                   .filter(
                                     (leaveTime) =>
-                                      leaveTime.action === "leave_room"
+                                      leaveTime.action === "Leave"
                                   )
                                   .map((filteredLeave) => {
                                     let date =
@@ -129,7 +134,7 @@ function Details() {
                                     // console.log(newDate);
                                     return newDate;
                                   })}
-                              </td>
+                              </td> */}
                               <td>
                                 <Link
                                   to={`/details/${roomID}/${data.id}`}
