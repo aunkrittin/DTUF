@@ -21,14 +21,13 @@ function Exam(props) {
   const [gformLink, setgformLink] = useState("");
   const [timeDisplay, setTimeDisplay] = useState("00:00:00");
 
-  const [imageUpload, setImageUpload] = useState(null);
-  const uploadImage = () => {
-    if (!imageUpload) return console.log("no data uploaded");
+  const uploadImage = (imageData) => {
+    if (!imageData) return console.log("no data uploaded");
     const imageRef = ref(
       storage,
       `/images/${roomId}/${studentName}/${studentName}_${v4()}`
     );
-    uploadString(imageRef, imageUpload, "data_url").then(() => {
+    uploadString(imageRef, imageData, "data_url").then(() => {
       // alert("Image uploaded successfully");
       console.log("Uploaded image");
     });
@@ -69,6 +68,10 @@ function Exam(props) {
   };
 
   const handleVisibilityChange = async (isVisible) => {
+    let video = document.querySelector("video");
+    let canvas = (window.canvas = document.querySelector("canvas"));
+    canvas.width = 480;
+    canvas.height = 360;
     // console.log(isVisible);
     if (isVisible) {
       const switchingTab = doc(
@@ -88,18 +91,17 @@ function Exam(props) {
       );
       // console.log("you in page");
     } else {
-      let video = document.querySelector("video");
-      let canvas = (window.canvas = document.querySelector("canvas"));
-      canvas.width = 480;
-      canvas.height = 360;
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-
       const timer = setTimeout(async () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
         canvas
           .getContext("2d")
           .drawImage(video, 0, 0, canvas.width, canvas.height);
 
+        let imageData = canvas.toDataURL();
+        // console.log(imageData);
+        // setImageUpload(imageData);
+        uploadImage(imageData);
         const switchingTab = doc(
           db,
           `rooms/${roomId}/students_join_room`,
@@ -115,10 +117,6 @@ function Exam(props) {
           },
           { merge: true }
         );
-
-        let imageData = canvas.toDataURL();
-        setImageUpload(imageData);
-        uploadImage();
       }, 1500);
       return () => clearTimeout(timer);
     }
@@ -155,7 +153,7 @@ function Exam(props) {
               studentsDocRef,
               {
                 activities: arrayUnion({
-                  action: "leave_room",
+                  action: "Leave",
                   timestamp: new Date(),
                 }),
                 trust_score: trustScore(),
@@ -210,7 +208,7 @@ function Exam(props) {
           studentsDocRef,
           {
             activities: arrayUnion({
-              action: "leave_room",
+              action: "Leave",
               timestamp: new Date(),
             }),
             trust_score: trustScore(),
