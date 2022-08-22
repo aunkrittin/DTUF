@@ -22,9 +22,9 @@ function Results() {
   const roomsNameCollectionRef = collection(db, "rooms");
   const [roomsFound, setRoomsFound] = useState("test");
 
-  function details(id) {
-    return navigate(`/details/${id}`, { replace: true });
-  }
+  // function details(id) {
+  //   return navigate(`/details/${id}`, { replace: true });
+  // }
 
   async function getRoomData() {
     const data = await query(
@@ -33,17 +33,16 @@ function Results() {
       orderBy("timestamp", "desc")
     );
     // console.log(data);
-
-    onSnapshot(data, (snapshot) => {
+    await onSnapshot(data, (snapshot) => {
       setRoomsData(
         snapshot.docs.map((doc) => {
           let data = doc.data();
           console.log(data);
+          setRoomsFound(true);
           return { id: doc.id, ...data };
         })
       );
     });
-    setRoomsFound(true);
   }
 
   useEffect(() => {
