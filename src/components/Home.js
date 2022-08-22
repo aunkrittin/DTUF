@@ -11,7 +11,7 @@ const Home = () => {
         <h1>Home</h1>
         {currentUser ? (
           <p>
-            You are logged in - <Link to="/dashboard">View Dashboard</Link>
+            You are logged in - <Link to="/results">View Results</Link>
           </p>
         ) : (
           <p>
