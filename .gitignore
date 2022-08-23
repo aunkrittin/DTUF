@@ -8,6 +8,8 @@ Face_Detection
 # testing
 /coverage
 
+.firebase
+
 # production
 /build
 
