@@ -32,7 +32,7 @@ function Student() {
         studentsDocRef,
         {
           activities: arrayUnion({
-            action: "join_room",
+            action: "Join",
             timestamp: new Date(),
           }),
         },
