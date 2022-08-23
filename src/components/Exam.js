@@ -7,7 +7,7 @@ import { getFirestore } from "@firebase/firestore";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import PageVisibility from "react-page-visibility";
-import { ref, getStorage, uploadString } from "firebase/storage";
+import { ref, getStorage, uploadString, listAll } from "firebase/storage";
 import { v4 } from "uuid";
 const db = getFirestore(firebaseConfig);
 
@@ -16,16 +16,17 @@ function Exam(props) {
   const storage = getStorage();
   const studentName = props.name;
   const { handle } = useParams();
-  const roomId = handle;
+  const roomID = handle;
   const [finihed, setFinished] = useState();
   const [gformLink, setgformLink] = useState("");
   const [timeDisplay, setTimeDisplay] = useState("00:00:00");
+  const imageListRef = ref(storage, `images/${roomID}/${studentName}`);
 
   const uploadImage = (imageData) => {
     if (!imageData) return console.log("no data uploaded");
     const imageRef = ref(
       storage,
-      `/images/${roomId}/${studentName}/${studentName}_${v4()}`
+      `/images/${roomID}/${studentName}/${studentName}_${v4()}`
     );
     uploadString(imageRef, imageData, "data_url").then(() => {
       // alert("Image uploaded successfully");
@@ -76,7 +77,7 @@ function Exam(props) {
     if (isVisible) {
       const switchingTab = doc(
         db,
-        `rooms/${roomId}/students_join_room`,
+        `rooms/${roomID}/students_join_room`,
         `${studentName}`
       );
       await setDoc(
@@ -99,12 +100,12 @@ function Exam(props) {
           .drawImage(video, 0, 0, canvas.width, canvas.height);
 
         let imageData = canvas.toDataURL();
-        // console.log(imageData);
-        // setImageUpload(imageData);
+
         uploadImage(imageData);
+
         const switchingTab = doc(
           db,
-          `rooms/${roomId}/students_join_room`,
+          `rooms/${roomID}/students_join_room`,
           `${studentName}`
         );
         await setDoc(
@@ -123,7 +124,7 @@ function Exam(props) {
   };
 
   function getData() {
-    getDoc(doc(db, "rooms", roomId)).then((data) => {
+    getDoc(doc(db, "rooms", roomID)).then((data) => {
       const roomData = data.data();
       // console.log(data.data());
       // setTimeCount(data.data());
@@ -140,27 +141,28 @@ function Exam(props) {
         setTimeDisplay(`${hours} : ${minutes} : ${sec}`);
         if (hours === 0 && minutes === 0 && sec === 0) {
           const forceFinish = async () => {
-            const studentsDocRef = doc(
-              db,
-              `rooms/${roomId}/students_join_room`,
-              `${studentName}`
-            );
-            function trustScore() {
-              let tScore = 100;
-              return tScore;
-            }
-            await setDoc(
-              studentsDocRef,
-              {
-                activities: arrayUnion({
-                  action: "Leave",
-                  timestamp: new Date(),
-                }),
-                trust_score: trustScore(),
-              },
-              { merge: true }
-            );
-            setFinished("Hello");
+            listAll(imageListRef).then(async (res) => {
+              let tScore = 100 - res.items.length;
+              const studentsDocRef = doc(
+                db,
+                `rooms/${roomID}/students_join_room`,
+                `${studentName}`
+              );
+              await setDoc(
+                studentsDocRef,
+                {
+                  activities: arrayUnion({
+                    action: "Leave",
+                    timestamp: new Date(),
+                  }),
+                  trust_score: tScore,
+                },
+                { merge: true }
+              );
+              setFinished("Hello");
+            });
+
+            ////////////////////////////////
           };
           stopCapture();
           forceFinish();
@@ -177,7 +179,7 @@ function Exam(props) {
     getData();
   }, []);
 
-  //const dataDoc =  getDoc(doc(db, "rooms", roomId));
+  //const dataDoc =  getDoc(doc(db, "rooms", roomID));
   //   // setRoomdata(dataDoc.data());
   //   console.log(dataDoc);
   // };
@@ -194,27 +196,26 @@ function Exam(props) {
       cancelButtonText: "No, haven't finished Submitting",
     }).then(async (result) => {
       if (result.isConfirmed) {
+        listAll(imageListRef).then(async (res) => {
+          let tScore = 100 - res.items.length;
+          const studentsDocRef = doc(
+            db,
+            `rooms/${roomID}/students_join_room`,
+            `${studentName}`
+          );
+          await setDoc(
+            studentsDocRef,
+            {
+              activities: arrayUnion({
+                action: "Leave",
+                timestamp: new Date(),
+              }),
+              trust_score: tScore,
+            },
+            { merge: true }
+          );
+        });
         // Swal.fire("Deleted!", "Your test has been deleted.", "success");
-        const studentsDocRef = doc(
-          db,
-          `rooms/${roomId}/students_join_room`,
-          `${studentName}`
-        );
-        function trustScore() {
-          let tScore = 100;
-          return tScore;
-        }
-        await setDoc(
-          studentsDocRef,
-          {
-            activities: arrayUnion({
-              action: "Leave",
-              timestamp: new Date(),
-            }),
-            trust_score: trustScore(),
-          },
-          { merge: true }
-        );
         setFinished("Hello");
       }
       stopCapture();
@@ -223,36 +224,37 @@ function Exam(props) {
 
   return (
     <>
-      <PageVisibility onChange={handleVisibilityChange}></PageVisibility>
-      {!finihed ? (
-        <div className="home-body mt-0">
-          <video playsInline autoPlay hidden></video>
-          <canvas hidden></canvas>
-          <h1 className="clock">{timeDisplay}</h1>
-          <Container>
-            <Row className="home-main-row">
-              <Col>
-                <Card className="">
-                  <Card.Body>
-                    <iframe
-                      allow="display-capture"
-                      src={gformLink}
-                      width="100%"
-                      height="750"
-                    ></iframe>
-                    <Button onClick={finishTest} className="btn btn-success">
-                      Finish
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-          {/* <Camera /> */}
-        </div>
-      ) : (
-        <Navigate to="/" />
-      )}
+      <PageVisibility onChange={handleVisibilityChange}>
+        {!finihed ? (
+          <div className="home-body mt-0">
+            <video playsInline autoPlay hidden></video>
+            <canvas hidden></canvas>
+            <h1 className="clock">{timeDisplay}</h1>
+            <Container>
+              <Row className="home-main-row">
+                <Col>
+                  <Card className="">
+                    <Card.Body>
+                      <iframe
+                        allow="display-capture"
+                        src={gformLink}
+                        width="100%"
+                        height="750"
+                      ></iframe>
+                      <Button onClick={finishTest} className="btn btn-success">
+                        Finish
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+            </Container>
+            {/* <Camera /> */}
+          </div>
+        ) : (
+          <Navigate to="/" />
+        )}
+      </PageVisibility>
     </>
   );
 }

@@ -4,6 +4,7 @@ import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
 import { collection, onSnapshot } from "firebase/firestore";
 import firebaseConfig from "../config";
+import { ref, getStorage, listAll } from "firebase/storage";
 import { getFirestore } from "@firebase/firestore";
 
 const db = getFirestore(firebaseConfig);
@@ -11,6 +12,7 @@ const db = getFirestore(firebaseConfig);
 function Details() {
   const { handle } = useParams();
   const roomID = handle;
+  const storage = getStorage();
   let navigate = useNavigate();
   const [studentsData, setStudentsData] = useState([]);
   const [foundData, setFoundData] = useState("test");
@@ -34,7 +36,7 @@ function Details() {
           setStudentsData(
             snapshot.docs.map((doc) => {
               let data = doc.data();
-              console.log(data);
+              // console.log(data);
               setFoundData(true);
               return { id: doc.id, ...data };
             })
@@ -47,6 +49,7 @@ function Details() {
   }
 
   useEffect(() => {
+    // getImages();
     getStudentData();
   }, []);
 
@@ -54,6 +57,8 @@ function Details() {
   if (!currentUser) {
     return <Navigate to="/login" />;
   }
+
+  let tScore = 0;
 
   return (
     <>
@@ -70,8 +75,6 @@ function Details() {
                         <tr>
                           <th>Student Name</th>
                           <th>Trust Score</th>
-                          {/* <th>Join Room (24Hr)</th>
-                          <th>Leave Room (24Hr)</th> */}
                           <th>Evidences</th>
                         </tr>
                       </thead>
@@ -81,60 +84,6 @@ function Details() {
                             <tr key={data.id}>
                               <td>{data.id}</td>
                               <td>{data.trust_score}</td>
-                              {/* <td>
-                                {data.activities
-                                  .filter(
-                                    (joinTime) =>
-                                      joinTime.action === "Join"
-                                  )
-                                  .map((filteredJoin) => {
-                                    let time =
-                                      filteredJoin.timestamp.toMillis();
-                                    let date = new Date(time);
-
-                                    let newDate =
-                                      // date.getDate() +
-                                      // "/" +
-                                      // (date.getMonth() + 1) +
-                                      // "/" +
-                                      // date.getFullYear() +
-                                      // " " +
-                                      date.getHours() +
-                                      ":" +
-                                      date.getMinutes() +
-                                      ":" +
-                                      date.getSeconds();
-                                    // console.log(newDate);
-                                    return newDate;
-                                  })}
-                              </td>
-                              <td>
-                                {data.activities
-                                  .filter(
-                                    (leaveTime) =>
-                                      leaveTime.action === "Leave"
-                                  )
-                                  .map((filteredLeave) => {
-                                    let date =
-                                      filteredLeave.timestamp.toMillis();
-                                    let time = new Date(date);
-                                    console.log(time);
-                                    let newDate =
-                                      // time.getDate() +
-                                      // "/" +
-                                      // (time.getMonth() + 1) +
-                                      // "/" +
-                                      // time.getFullYear() +
-                                      // " " +
-                                      time.getHours() +
-                                      ":" +
-                                      time.getMinutes() +
-                                      ":" +
-                                      time.getSeconds();
-                                    // console.log(newDate);
-                                    return newDate;
-                                  })}
-                              </td> */}
                               <td>
                                 <Link
                                   to={`/details/${roomID}/${data.id}`}

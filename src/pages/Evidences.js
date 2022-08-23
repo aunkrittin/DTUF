@@ -45,6 +45,7 @@ function Evidences() {
 
   function getImageList() {
     listAll(imageListRef).then((response) => {
+      // console.log(response.items.length);
       if (response.items.length === 0) {
         return console.log("Image not found");
       } else {
