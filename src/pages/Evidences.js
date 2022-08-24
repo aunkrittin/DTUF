@@ -3,13 +3,7 @@ import { Container, Card, Row, Col, Table, Button } from "react-bootstrap";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
 import { getDoc, doc } from "firebase/firestore";
-import {
-  ref,
-  getStorage,
-  listAll,
-  getDownloadURL,
-  getMetadata,
-} from "firebase/storage";
+import { ref, getStorage, listAll, getDownloadURL } from "firebase/storage";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
 
