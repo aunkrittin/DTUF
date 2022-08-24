@@ -24,6 +24,8 @@ function Evidences() {
     "students_join_room",
     `${studentName}`
   );
+  const [faceImgList, setFaceImgList] = useState([]);
+  const faceListRef = ref(storage, ``);
   const [imageList, setImageList] = useState([]);
   const imageListRef = ref(storage, `images/${roomID}/${studentName}`);
   const [imageFound, setImageFound] = useState("test");
@@ -43,6 +45,16 @@ function Evidences() {
     }
   }
 
+  function getFaceImgList() {
+    listAll(faceListRef).then((res) => {
+      res.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setFaceImgList((prev) => [...prev, url]);
+        });
+      });
+    });
+  }
+
   function getImageList() {
     listAll(imageListRef).then((response) => {
       // console.log(response.items.length);
@@ -60,6 +72,7 @@ function Evidences() {
   }
 
   useEffect(() => {
+    getFaceImgList();
     getImageList();
     getEviData();
   }, []);
@@ -143,6 +156,19 @@ function Evidences() {
                             }}
                             width="900"
                             height="600"
+                            src={url}
+                          />
+                        );
+                      })}
+                      {faceImgList.map((url) => {
+                        return (
+                          <img
+                            style={{
+                              display: "block",
+                              margin: "auto",
+                              marginBottom: "30px",
+                              justifyContent: "center",
+                            }}
                             src={url}
                           />
                         );

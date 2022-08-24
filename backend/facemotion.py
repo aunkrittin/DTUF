@@ -204,9 +204,35 @@ if studentName is not None:
                 landmark_drawing_spec=drawing_spec,
                 connection_drawing_spec=drawing_spec)
 
+        elif not results.multi_face_landmarks:
+            text = "No face detection"
+            noface_ref = db.document(
+                u'loggedIn/{}'.format(studentName))
+            P = time.ctime()
+            noface_ref.set({
+                u'activities': firestore.ArrayUnion([{
+                    u'action': text,
+                    u'timestamp': P
+                }])
+            }, merge=True)
+
+            # imload no face img
+            ret, frame = cap.read()
+            img_name = "Right_{}_{}.png".format(
+                studentName, img_counter)
+            cv2.imwrite(img_name, frame)
+            print("{} Capture!!!".format(img_name))
+            img_counter += 1
+            fileName = img_name
+            bucket = storage.bucket()
+            blob = bucket.blob(fileName)
+            blob.upload_from_filename(fileName)
+
         cv2.imshow('Head Pose Estimation', image)
 
         if cv2.waitKey(1) & 0xFF == 27:
+            db.collection(u'loggedIn').document(
+                u'{}'.format(studentName)).delete()
             break
 
         # print (seconds)
