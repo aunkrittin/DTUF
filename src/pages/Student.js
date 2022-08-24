@@ -14,7 +14,6 @@ function Student() {
   const [joined, setJoined] = useState();
   const [studentName, setStudentName] = useState();
   const [roomID, setroomID] = useState();
-  const [isLoggedIn, setIsLoggedIn] = useState([]);
 
   useEffect(() => {
     setroomID(handle);
