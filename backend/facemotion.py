@@ -1,3 +1,4 @@
+from heapq import merge
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -25,14 +26,12 @@ ROOT = tk.Tk()
 ROOT.withdraw()
 
 # the input dialog
-USER_INP = simpledialog.askstring(title="Test", prompt="What's your Name?:")
-if USER_INP is not None:
+studentName = simpledialog.askstring(title="Name", prompt="Enter your name: ")
+if studentName is not None:
 
     # add student name to firestore
-    logged_ref = db.collection(u'loggedIn').document(u'users')
-    logged_ref.set({
-        u'student_name': USER_INP
-    })
+    logged_ref = db.collection(u'loggedIn').document(u'{}'.format(studentName))
+    logged_ref.set({})
 
     img_counter = 0
 
@@ -119,14 +118,14 @@ if USER_INP is not None:
                     #     'action': text,
                     #     'Time': P
                     # })
-                    action_ref = db.collection(u'loggedIn').document(
-                        u'student_cam_loggedIn')
+                    action_ref = db.document(
+                        u'loggedIn/{}'.format(studentName))
                     action_ref.set({
-                        USER_INP: firestore.ArrayUnion({
+                        u'activities': firestore.ArrayUnion([{
                             u'action': text,
-                            u'timestamp': P,
-                        })
-                    })
+                            u'timestamp': P
+                        }])
+                    }, merge=True)
 
                     # Add images to Storages
                     ret, frame = cap.read()
@@ -153,9 +152,19 @@ if USER_INP is not None:
                     #     'Time': P
                     #     # 'timestamp': "time that they turn"
                     # })
+                    action_ref = db.document(
+                        u'loggedIn/{}'.format(studentName))
+                    action_ref.set({
+                        u'activities': firestore.ArrayUnion([{
+                            u'action': text,
+                            u'timestamp': P
+                        }])
+                    }, merge=True)
+
                     # Add images to Storages
                     ret, frame = cap.read()
-                    img_name = "Right_{}.png".format(img_counter)
+                    img_name = "Right_{}_{}.png".format(
+                        studentName, img_counter)
                     cv2.imwrite(img_name, frame)
                     print("{} Capture!!!".format(img_name))
                     img_counter += 1
