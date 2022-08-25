@@ -13,11 +13,11 @@ from firebase_admin import db
 from firebase_admin import credentials, initialize_app, storage
 
 cred = credentials.Certificate(
-    './react-auth-f1deb-firebase-adminsdk-b8nc8-edaa65cdb3.json')
+    './dtuf-finalproject-firebase-adminsdk-saq82-43b5438266.json')
 
 firebase_admin.initialize_app(cred, {
-    "databaseURL": "https://react-auth-f1deb-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "storageBucket": "react-auth-f1deb.appspot.com",
+    "databaseURL": "https://dtuf-finalproject-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "storageBucket": "dtuf-finalproject.appspot.com",
 })
 # ref = db.reference('/')
 db = firestore.client()
