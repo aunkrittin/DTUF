@@ -28,8 +28,9 @@ function Teacher() {
         timeDuration: parseInt(timeDuration),
       });
       Swal.fire({
-        title: "Success",
+        title: "Login success",
         icon: "success",
+        text: "You have successfully create the room",
       }).then(() => {
         navigate("/results", { replace: true });
       });
