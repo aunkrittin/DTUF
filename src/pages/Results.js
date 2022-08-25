@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Card, Row, Col, Table, Button } from "react-bootstrap";
+import {
+  Container,
+  Card,
+  Row,
+  Col,
+  Table,
+  Button,
+  Form,
+} from "react-bootstrap";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
 import {
@@ -8,6 +16,8 @@ import {
   query,
   where,
   onSnapshot,
+  updateDoc,
+  doc,
 } from "firebase/firestore";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
@@ -21,7 +31,7 @@ function Results() {
   const [roomsData, setRoomsData] = useState([]);
   const roomsNameCollectionRef = collection(db, "rooms");
   const [roomsFound, setRoomsFound] = useState("test");
-  const [roomStatus, setRoomStatus] = useState();
+  const [status, setStatus] = useState();
 
   // function details(id) {
   //   return navigate(`/details/${id}`, { replace: true });
@@ -39,7 +49,7 @@ function Results() {
         snapshot.docs.map((doc) => {
           let data = doc.data();
           console.log(data);
-          setRoomStatus(data.room_status);
+          setStatus(data.room_status);
           setRoomsFound(true);
           return { id: doc.id, ...data };
         })
@@ -124,12 +134,14 @@ function Results() {
                         {roomsData.map((data) => {
                           // console.log(data.timestamp);
                           const date = data.timestamp.toDate().toDateString();
+                          let status = data.room_status === "true";
                           return (
                             <tr key={data.id}>
                               <td>{data.room_name}</td>
                               <td>{data.id}</td>
                               <td>{data.timeDuration}</td>
                               <td>{date}</td>
+
                               <td>
                                 <Link
                                   to={`/student/${data.id}`}
@@ -181,6 +193,7 @@ function Results() {
                           <th>Room ID</th>
                           <th>Time (minutes)</th>
                           <th>Created At</th>
+                          <th>Room Status</th>
                           <th>Link</th>
                           <th>Details</th>
                           <th>Delete</th>

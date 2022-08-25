@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { Container, Card, Row, Col, Table, Button } from "react-bootstrap";
 import { Navigate, useNavigate, useParams, Link } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import firebaseConfig from "../config";
 import { ref, getStorage, listAll } from "firebase/storage";
 import { getFirestore } from "@firebase/firestore";
+import Swal from "sweetalert2";
 
 const db = getFirestore(firebaseConfig);
 
@@ -57,8 +58,6 @@ function Details() {
   if (!currentUser) {
     return <Navigate to="/login" />;
   }
-
-  let tScore = 0;
 
   return (
     <>

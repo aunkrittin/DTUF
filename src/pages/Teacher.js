@@ -100,13 +100,13 @@ function Teacher() {
                   }}
                   required
                 />
-                <br />
+                {/* <br />
                 <p>Room Status:</p>
                 <input
                   type="radio"
                   name="open"
                   id="open"
-                  value="Open"
+                  value="true"
                   onChange={(e) => {
                     setRoomStatus(e.target.value);
                   }}
@@ -120,7 +120,7 @@ function Teacher() {
                   type="radio"
                   name="close"
                   id="close"
-                  value="Close"
+                  value="false"
                   onChange={(e) => {
                     setRoomStatus(e.target.value);
                   }}
@@ -128,7 +128,7 @@ function Teacher() {
                 &nbsp;
                 <label htmlFor="close" className="form-label">
                   Close
-                </label>
+                </label> */}
                 <br />
                 <Button onClick={createRoom} className="btn btn-success">
                   Create
