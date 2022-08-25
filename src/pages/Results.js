@@ -21,6 +21,7 @@ function Results() {
   const [roomsData, setRoomsData] = useState([]);
   const roomsNameCollectionRef = collection(db, "rooms");
   const [roomsFound, setRoomsFound] = useState("test");
+  const [roomStatus, setRoomStatus] = useState();
 
   // function details(id) {
   //   return navigate(`/details/${id}`, { replace: true });
@@ -38,6 +39,7 @@ function Results() {
         snapshot.docs.map((doc) => {
           let data = doc.data();
           console.log(data);
+          setRoomStatus(data.room_status);
           setRoomsFound(true);
           return { id: doc.id, ...data };
         })
