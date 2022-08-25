@@ -16,8 +16,6 @@ import {
   query,
   where,
   onSnapshot,
-  updateDoc,
-  doc,
 } from "firebase/firestore";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
