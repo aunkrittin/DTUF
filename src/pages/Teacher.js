@@ -15,10 +15,12 @@ function Teacher() {
   const [gForm, setGForm] = useState("");
   const roomsCollectionRef = collection(db, "rooms");
   const [timeDuration, setTimeDuration] = useState();
+  const [roomStatus, setRoomStatus] = useState();
 
   const createRoom = async () => {
     if (roomName.trim() !== "" && gForm.trim() !== "") {
       await addDoc(roomsCollectionRef, {
+        room_status: roomStatus,
         room_name: roomName.trim(),
         gformLink: gForm.trim(),
         user_id: currentUser.uid,
@@ -85,7 +87,7 @@ function Teacher() {
                 />
                 <br />
                 <br />
-                <label htmlFor="name" className="form-label">
+                <label htmlFor="exam-time" className="form-label">
                   Exam time(minutes):
                 </label>
                 <br />
@@ -99,6 +101,34 @@ function Teacher() {
                   required
                 />
                 <br />
+                <p>Room Status:</p>
+                <input
+                  type="radio"
+                  name="open"
+                  id="open"
+                  value="Open"
+                  onChange={(e) => {
+                    setRoomStatus(e.target.value);
+                  }}
+                />
+                &nbsp;
+                <label htmlFor="open" className="form-label">
+                  Open
+                </label>
+                <br />
+                <input
+                  type="radio"
+                  name="close"
+                  id="close"
+                  value="Close"
+                  onChange={(e) => {
+                    setRoomStatus(e.target.value);
+                  }}
+                />
+                &nbsp;
+                <label htmlFor="close" className="form-label">
+                  Close
+                </label>
                 <br />
                 <Button onClick={createRoom} className="btn btn-success">
                   Create
