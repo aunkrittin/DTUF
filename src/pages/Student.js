@@ -22,43 +22,43 @@ function Student() {
   const joinRoom = async () => {
     const camLoginRef = doc(db, "loggedIn", `${studentName}`);
     const loggedSnap = await getDoc(camLoginRef);
-    // if (loggedSnap.exists()) {
-    // console.log("Document: ", loggedSnap.data());
-    const studentsDocRef = doc(
-      db,
-      `rooms/${roomID}/students_join_room`,
-      `${studentName}`
-    );
-    const dataDoc = await getDoc(doc(db, "rooms", roomID));
-    // console.log("student:" + dataDoc);
-    if (dataDoc.exists()) {
-      await setDoc(
-        studentsDocRef,
-        {
-          activities: arrayUnion({
-            action: "Join",
-            timestamp: new Date(),
-          }),
-        },
-        { merge: true }
+    if (loggedSnap.exists()) {
+      // console.log("Document: ", loggedSnap.data());
+      const studentsDocRef = doc(
+        db,
+        `rooms/${roomID}/students_join_room`,
+        `${studentName}`
       );
-      setJoined(true);
+      const dataDoc = await getDoc(doc(db, "rooms", roomID));
+      // console.log("student:" + dataDoc);
+      if (dataDoc.exists()) {
+        await setDoc(
+          studentsDocRef,
+          {
+            activities: arrayUnion({
+              action: "Join",
+              timestamp: new Date(),
+            }),
+          },
+          { merge: true }
+        );
+        setJoined(true);
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: "Room not found",
+          icon: "error",
+          confirmButtonText: "Close",
+        });
+      }
     } else {
       Swal.fire({
         title: "Error!",
-        text: "Room not found",
+        text: "Please login in your camera and try again",
         icon: "error",
         confirmButtonText: "Close",
       });
     }
-    // } else {
-    //   Swal.fire({
-    //     title: "Error!",
-    //     text: "Please login in your camera and try again",
-    //     icon: "error",
-    //     confirmButtonText: "Close",
-    //   });
-    // }
   };
 
   const { currentUser } = useContext(AuthContext);

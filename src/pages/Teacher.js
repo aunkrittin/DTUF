@@ -20,7 +20,7 @@ function Teacher() {
   const createRoom = async () => {
     if (roomName.trim() !== "" && gForm.trim() !== "") {
       await addDoc(roomsCollectionRef, {
-        room_status: roomStatus,
+        // room_status: roomStatus,
         room_name: roomName.trim(),
         gformLink: gForm.trim(),
         user_id: currentUser.uid,
