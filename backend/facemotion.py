@@ -5,12 +5,14 @@ import numpy as np
 import time
 import tkinter as tk
 from tkinter import simpledialog
-import datetime
-import firebase_admin
+# import datetime
+import os
 from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin import db
 from firebase_admin import credentials, initialize_app, storage
+import firebase_admin
+
 
 cred = credentials.Certificate(
     './dtuf-finalproject-firebase-adminsdk-saq82-43b5438266.json')
@@ -21,6 +23,8 @@ firebase_admin.initialize_app(cred, {
 })
 # ref = db.reference('/')
 db = firestore.client()
+
+# storage = firebase_admin.storage()
 
 ROOT = tk.Tk()
 ROOT.withdraw()
@@ -129,7 +133,8 @@ if studentName is not None:
 
                     # Add images to Storages
                     ret, frame = cap.read()
-                    img_name = "Left_{}.png".format(img_counter)
+                    img_name = "Left_{}_{}.png".format(
+                        studentName, img_counter)
                     cv2.imwrite(img_name, frame)
                     print("{} Capture!!!".format(img_name))
                     img_counter += 1
@@ -138,7 +143,7 @@ if studentName is not None:
                     blob = bucket.blob(fileName)
                     blob.upload_from_filename(fileName)
 
-                    # Opt : if you want to make public access from the URL
+                    # Opt: if you want to make public access from the URL
                     # blob.make_public()
 
                 elif y > 10:
@@ -218,7 +223,7 @@ if studentName is not None:
 
             # imload no face img
             ret, frame = cap.read()
-            img_name = "Right_{}_{}.png".format(
+            img_name = "noFace_{}_{}.png".format(
                 studentName, img_counter)
             cv2.imwrite(img_name, frame)
             print("{} Capture!!!".format(img_name))
