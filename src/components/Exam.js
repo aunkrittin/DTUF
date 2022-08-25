@@ -221,8 +221,8 @@ function Exam(props) {
         });
         // Swal.fire("Deleted!", "Your test has been deleted.", "success");
         setFinished("Hello");
+        stopCapture();
       }
-      stopCapture();
     });
   };
 
