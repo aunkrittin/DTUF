@@ -3,7 +3,7 @@ import { Container, Card, Row, Col, Button } from "react-bootstrap";
 import { AuthContext } from "../components/Auth";
 import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
 import firebaseConfig from "../config";
-import { getFirestore, onSnapshot, collection } from "@firebase/firestore";
+import { getFirestore } from "@firebase/firestore";
 import Exam from "../components/Exam";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
@@ -14,47 +14,61 @@ function Student() {
   const [joined, setJoined] = useState();
   const [studentName, setStudentName] = useState();
   const [roomID, setroomID] = useState();
+  const camLoggedRef = doc(db, "camLoggedIn", `${roomID}`);
+  const studentsDocRef = doc(
+    db,
+    `rooms/${roomID}/students_join_room`,
+    `${studentName}`
+  );
 
   useEffect(() => {
     setroomID(handle);
   }, []);
 
   const joinRoom = async () => {
-    const camLoginRef = doc(db, "loggedIn", `${studentName}`);
-    const loggedSnap = await getDoc(camLoginRef);
-    if (loggedSnap.exists()) {
-      // console.log("Document: ", loggedSnap.data());
-      const studentsDocRef = doc(
-        db,
-        `rooms/${roomID}/students_join_room`,
-        `${studentName}`
-      );
-      const dataDoc = await getDoc(doc(db, "rooms", roomID));
-      // console.log("student:" + dataDoc);
-      if (dataDoc.exists()) {
-        await setDoc(
-          studentsDocRef,
-          {
-            activities: arrayUnion({
-              action: "Join",
-              timestamp: new Date(),
-            }),
-          },
-          { merge: true }
-        );
-        setJoined(true);
+    try {
+      let camLoggedSnap = await getDoc(camLoggedRef);
+      let data = {
+        student_name: studentName,
+      };
+      let camLogData = camLoggedSnap.data({ student_name: studentName });
+      console.log(data.student_name);
+      console.log(camLoggedSnap.data().student_name);
+      if (data.student_name === camLogData.student_name) {
+        const dataDoc = await getDoc(doc(db, "rooms", roomID));
+        // console.log("student:" + dataDoc);
+        if (dataDoc.exists()) {
+          await setDoc(
+            studentsDocRef,
+            {
+              activities: arrayUnion({
+                action: "Join",
+                timestamp: new Date(),
+              }),
+            },
+            { merge: true }
+          );
+          setJoined(true);
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Room not found",
+            icon: "error",
+            confirmButtonText: "Close",
+          });
+        }
       } else {
         Swal.fire({
           title: "Error!",
-          text: "Room not found",
+          text: "Room ID or name are not match please check and try again",
           icon: "error",
           confirmButtonText: "Close",
         });
       }
-    } else {
+    } catch (error) {
       Swal.fire({
         title: "Error!",
-        text: "Please login in your camera and try again",
+        text: "Room ID or name are not match please check and try again",
         icon: "error",
         confirmButtonText: "Close",
       });
