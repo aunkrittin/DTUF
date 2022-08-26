@@ -231,6 +231,13 @@ function Exam(props) {
       <PageVisibility onChange={handleVisibilityChange}>
         {!finihed ? (
           <div className="home-body mt-0">
+            <Button
+              onClick={finishTest}
+              className="btn btn-success"
+              id="finish-button"
+            >
+              Finish
+            </Button>
             <video playsInline autoPlay hidden></video>
             <canvas hidden></canvas>
             <h1 className="clock">{timeDisplay}</h1>
@@ -245,14 +252,12 @@ function Exam(props) {
                         width="100%"
                         height="750"
                       ></iframe>
-                      <Button onClick={finishTest} className="btn btn-success">
-                        Finish
-                      </Button>
                     </Card.Body>
                   </Card>
                 </Col>
               </Row>
             </Container>
+
             {/* <Camera /> */}
           </div>
         ) : (
