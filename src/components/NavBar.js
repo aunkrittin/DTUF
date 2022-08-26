@@ -4,7 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { AuthContext } from "./Auth";
 import firebaseConfig from "../config";
-// import NavDropdown from "react-bootstrap/NavDropdown";
+import { FiVideo } from "react-icons/fi";
 
 function NavBar() {
   const { currentUser } = useContext(AuthContext);
@@ -16,7 +16,10 @@ function NavBar() {
     <>
       <Navbar bg="dark" variant="dark" sticky="top">
         <Container>
-          <Navbar.Brand href="/">Don't turn your face!!</Navbar.Brand>
+          <Navbar.Brand href="/">
+            Don't turn your face!! {""}
+            <FiVideo />
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             {currentUser ? (
