@@ -8,6 +8,7 @@ Face_Detection
 # testing
 /coverage
 
+/backend/env
 
 # production
 /build

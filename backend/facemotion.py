@@ -6,13 +6,29 @@ import time
 import tkinter as tk
 from tkinter import simpledialog
 # import datetime
-import os
+
 from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin import db
 from firebase_admin import credentials, initialize_app, storage
 import firebase_admin
 import shortuuid
+import pyrebase
+
+config = {
+    "apiKey": "AIzaSyAVF6asQANw9KrwNpmDnfr-xIHmiONu6-Y",
+    "authDomain": "dtuf-finalproject.firebaseapp.com",
+    "databaseURL": "https://dtuf-finalproject-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "projectId": "dtuf-finalproject",
+    "storageBucket": "dtuf-finalproject.appspot.com",
+    "messagingSenderId": "418252907526",
+    "appId": "1:418252907526:web:d9e91764fb66b3f3134f87",
+    "serviceAccount": "./dtuf-finalproject-firebase-adminsdk-saq82-43b5438266.json"
+}
+
+firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
+
 
 cred = credentials.Certificate(
     './dtuf-finalproject-firebase-adminsdk-saq82-43b5438266.json')
@@ -21,11 +37,8 @@ firebase_admin.initialize_app(cred, {
     "databaseURL": "https://dtuf-finalproject-default-rtdb.asia-southeast1.firebasedatabase.app",
     "storageBucket": "dtuf-finalproject.appspot.com",
 })
-# ref = db.reference('/')
 db = firestore.client()
 
-
-# storage = firebase_admin.storage()
 
 ROOT = tk.Tk()
 ROOT.withdraw()
@@ -142,13 +155,16 @@ if studentName and roomID is not None:
                     cv2.imwrite(img_name, frame)
                     print("{} Capture!!!".format(img_name))
                     img_counter += 1
-                    fileName = img_name
-                    bucket = storage.bucket()
-                    blob = bucket.blob(fileName)
-                    blob.upload_from_filename(fileName)
+                    # fileName = img_name
+                    # bucket = storage.bucket()
+                    # blob = bucket.blob(fileName)
+                    # blob.upload_from_filename(fileName)
 
-                    # Opt: if you want to make public access from the URL
-                    # blob.make_public()
+                    # Add images with pyrebase
+                    path_on_cloud = 'images/{}/{}_Left_{}.png'.format(
+                        roomID, studentName, shortuuid.uuid())
+                    path_local = img_name
+                    storage.child(path_on_cloud).put(path_local)
 
                 elif y > 10:
                     seconds = countTime(seconds)
