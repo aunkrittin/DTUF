@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Card, Row, Col, Table, Button } from "react-bootstrap";
+import {
+  Container,
+  Card,
+  Row,
+  Col,
+  Table,
+  Button,
+  Collapse,
+} from "react-bootstrap";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../components/Auth";
 import { getDoc, doc } from "firebase/firestore";
@@ -29,6 +37,7 @@ function Evidences() {
   const [imageList, setImageList] = useState([]);
   const imageListRef = ref(storage, `images/${roomID}/${studentName}`);
   const [imageFound, setImageFound] = useState("test");
+  const [open, setOpen] = useState(false);
 
   async function getEviData() {
     try {
@@ -133,6 +142,14 @@ function Evidences() {
                     >
                       Back
                     </Button>
+                    <Button
+                      className="btn btn-primary"
+                      onClick={() => setOpen(!open)}
+                      aria-controls="collapse-text"
+                      aria-expanded={open}
+                    >
+                      Images evidence
+                    </Button>
                   </Card.Body>
                 </Card>
               </Col>
@@ -142,39 +159,43 @@ function Evidences() {
             <Container>
               <Row className="home-main-row">
                 <Col>
-                  <Card className="p-3">
-                    <h1>Images</h1>
-                    <Card.Body>
-                      {imageList.map((url) => {
-                        return (
-                          <img
-                            style={{
-                              display: "block",
-                              margin: "auto",
-                              marginBottom: "30px",
-                              justifyContent: "center",
-                            }}
-                            width="900"
-                            height="600"
-                            src={url}
-                          />
-                        );
-                      })}
-                      {faceImgList.map((url) => {
-                        return (
-                          <img
-                            style={{
-                              display: "block",
-                              margin: "auto",
-                              marginBottom: "30px",
-                              justifyContent: "center",
-                            }}
-                            src={url}
-                          />
-                        );
-                      })}
-                    </Card.Body>
-                  </Card>
+                  <Collapse in={open}>
+                    <div id="collapse-text">
+                      <Card className="p-3">
+                        <h1>Images</h1>
+                        <Card.Body>
+                          {imageList.map((url) => {
+                            return (
+                              <img
+                                style={{
+                                  display: "block",
+                                  margin: "auto",
+                                  marginBottom: "30px",
+                                  justifyContent: "center",
+                                }}
+                                width="900"
+                                height="600"
+                                src={url}
+                              />
+                            );
+                          })}
+                          {faceImgList.map((url) => {
+                            return (
+                              <img
+                                style={{
+                                  display: "block",
+                                  margin: "auto",
+                                  marginBottom: "30px",
+                                  justifyContent: "center",
+                                }}
+                                src={url}
+                              />
+                            );
+                          })}
+                        </Card.Body>
+                      </Card>
+                    </div>
+                  </Collapse>
                 </Col>
               </Row>
             </Container>
