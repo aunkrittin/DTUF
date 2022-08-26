@@ -21,7 +21,6 @@ function Exam(props) {
   const [gformLink, setgformLink] = useState("");
   const [timeDisplay, setTimeDisplay] = useState("00:00:00");
   const imageListRef = ref(storage, `images/${roomID}/${studentName}`);
-  const faceimgRef = ref(storage, "");
 
   const uploadImage = (imageData) => {
     if (!imageData) return console.log("no data uploaded");
@@ -143,26 +142,24 @@ function Exam(props) {
         if (hours === 0 && minutes === 0 && sec === 0) {
           const forceFinish = async () => {
             listAll(imageListRef).then(async (res) => {
-              listAll(faceimgRef).then(async (data) => {
-                let tScore = 100 - res.items.length - data.items.length;
-                const studentsDocRef = doc(
-                  db,
-                  `rooms/${roomID}/students_join_room`,
-                  `${studentName}`
-                );
-                await setDoc(
-                  studentsDocRef,
-                  {
-                    activities: arrayUnion({
-                      action: "Leave",
-                      timestamp: new Date(),
-                    }),
-                    trust_score: tScore,
-                  },
-                  { merge: true }
-                );
-                setFinished("Hello");
-              });
+              let tScore = 100 - res.items.length;
+              const studentsDocRef = doc(
+                db,
+                `rooms/${roomID}/students_join_room`,
+                `${studentName}`
+              );
+              await setDoc(
+                studentsDocRef,
+                {
+                  activities: arrayUnion({
+                    action: "Leave",
+                    timestamp: new Date(),
+                  }),
+                  trust_score: tScore,
+                },
+                { merge: true }
+              );
+              setFinished("Hello");
             });
             ////////////////////////////////
           };
@@ -199,25 +196,23 @@ function Exam(props) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         listAll(imageListRef).then(async (res) => {
-          listAll(faceimgRef).then(async (data) => {
-            let tScore = 100 - res.items.length - data.items.length;
-            const studentsDocRef = doc(
-              db,
-              `rooms/${roomID}/students_join_room`,
-              `${studentName}`
-            );
-            await setDoc(
-              studentsDocRef,
-              {
-                activities: arrayUnion({
-                  action: "Leave",
-                  timestamp: new Date(),
-                }),
-                trust_score: tScore,
-              },
-              { merge: true }
-            );
-          });
+          let tScore = 100 - res.items.length;
+          const studentsDocRef = doc(
+            db,
+            `rooms/${roomID}/students_join_room`,
+            `${studentName}`
+          );
+          await setDoc(
+            studentsDocRef,
+            {
+              activities: arrayUnion({
+                action: "Leave",
+                timestamp: new Date(),
+              }),
+              trust_score: tScore,
+            },
+            { merge: true }
+          );
         });
         // Swal.fire("Deleted!", "Your test has been deleted.", "success");
         setFinished("Hello");
