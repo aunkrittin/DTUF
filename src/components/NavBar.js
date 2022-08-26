@@ -14,19 +14,56 @@ function NavBar() {
 
   return (
     <>
-      <Navbar bg="dark" variant="dark" sticky="top">
+      <Navbar collapseOnSelect bg="dark" variant="dark" sticky="top">
+        <Container>
+          <Navbar.Brand href="/">
+            Don't turn your face!! {""}
+            <FiVideo />
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          {currentUser ? (
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="me-auto">
+                <Nav.Link className="nav-link" href="/teacher">
+                  Teacher
+                </Nav.Link>
+                <Nav.Link className="nav-link" href="/results">
+                  Results
+                </Nav.Link>
+              </Nav>
+              <Nav>
+                <Nav.Link
+                  className="nav-link"
+                  onClick={() => firebaseConfig.auth().signOut()}
+                >
+                  Logout
+                </Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
+          ) : (
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="justify-content-end flex-grow-1 pe">
+                <Nav.Link className="nav-link" href="/login">
+                  Login
+                </Nav.Link>
+                <Nav.Link className="nav-link" href="/signup">
+                  Register
+                </Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
+          )}
+        </Container>
+      </Navbar>
+      {/* <Navbar bg="dark" variant="dark" sticky="top">
         <Container>
           <Navbar.Brand href="/">
             Don't turn your face!! {""}
             <FiVideo />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Collapse id="responsive-navbar-nav">
             {currentUser ? (
               <Nav className="me-auto">
-                {/* <Nav.Link className="nav-link" href="/student">
-                  Student
-                </Nav.Link> */}
                 <Nav.Link className="nav-link" href="/teacher">
                   Teacher
                 </Nav.Link>
@@ -42,26 +79,17 @@ function NavBar() {
               </Nav>
             ) : (
               <Nav className="me-auto">
-                {/* <Nav.Link className="nav-link" href="/student">
-                  Student
-                </Nav.Link> */}
+                <Nav.Link className="nav-link" href="/login">
+                  Login
+                </Nav.Link>
+                <Nav.Link className="nav-link" href="/signup">
+                  Register
+                </Nav.Link>
               </Nav>
             )}
-
-            {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown> */}
           </Navbar.Collapse>
         </Container>
-      </Navbar>
+      </Navbar> */}
     </>
   );
 }
