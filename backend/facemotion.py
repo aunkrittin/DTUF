@@ -12,7 +12,7 @@ from firebase_admin import firestore
 from firebase_admin import db
 from firebase_admin import credentials, initialize_app, storage
 import firebase_admin
-
+import shortuuid
 
 cred = credentials.Certificate(
     './dtuf-finalproject-firebase-adminsdk-saq82-43b5438266.json')
@@ -24,6 +24,7 @@ firebase_admin.initialize_app(cred, {
 # ref = db.reference('/')
 db = firestore.client()
 
+
 # storage = firebase_admin.storage()
 
 ROOT = tk.Tk()
@@ -31,11 +32,14 @@ ROOT.withdraw()
 
 # the input dialog
 studentName = simpledialog.askstring(title="Name", prompt="Enter your name: ")
-if studentName is not None:
+roomID = simpledialog.askstring(title="Room ID", prompt="Enter your room ID: ")
+if studentName and roomID is not None:
 
     # add student name to firestore
-    logged_ref = db.collection(u'loggedIn').document(u'{}'.format(studentName))
-    logged_ref.set({})
+    logged_ref = db.collection(u'camLoggedIn').document(u'{}'.format(roomID))
+    logged_ref.set({
+        u'studen_name': studentName
+    })
 
     img_counter = 0
 
@@ -123,7 +127,7 @@ if studentName is not None:
                     #     'Time': P
                     # })
                     action_ref = db.document(
-                        u'loggedIn/{}'.format(studentName))
+                        u'camLoggedIn/{}'.format(roomID))
                     action_ref.set({
                         u'activities': firestore.ArrayUnion([{
                             u'action': text,
@@ -133,8 +137,8 @@ if studentName is not None:
 
                     # Add images to Storages
                     ret, frame = cap.read()
-                    img_name = "Left_{}_{}.png".format(
-                        studentName, img_counter)
+                    img_name = "{}_{}_Left_{}.png".format(
+                        roomID, studentName, shortuuid.uuid())
                     cv2.imwrite(img_name, frame)
                     print("{} Capture!!!".format(img_name))
                     img_counter += 1
@@ -158,7 +162,7 @@ if studentName is not None:
                     #     # 'timestamp': "time that they turn"
                     # })
                     action_ref = db.document(
-                        u'loggedIn/{}'.format(studentName))
+                        u'camLoggedIn/{}'.format(roomID))
                     action_ref.set({
                         u'activities': firestore.ArrayUnion([{
                             u'action': text,
@@ -168,8 +172,8 @@ if studentName is not None:
 
                     # Add images to Storages
                     ret, frame = cap.read()
-                    img_name = "Right_{}_{}.png".format(
-                        studentName, img_counter)
+                    img_name = "{}_{}_Right_{}.png".format(
+                        roomID, studentName, shortuuid.uuid())
                     cv2.imwrite(img_name, frame)
                     print("{} Capture!!!".format(img_name))
                     img_counter += 1
@@ -212,7 +216,7 @@ if studentName is not None:
         elif not results.multi_face_landmarks:
             text = "No face detection"
             noface_ref = db.document(
-                u'loggedIn/{}'.format(studentName))
+                u'camLoggedIn/{}'.format(studentName))
             P = time.ctime()
             noface_ref.set({
                 u'activities': firestore.ArrayUnion([{
@@ -223,8 +227,8 @@ if studentName is not None:
 
             # imload no face img
             ret, frame = cap.read()
-            img_name = "noFace_{}_{}.png".format(
-                studentName, img_counter)
+            img_name = "{}_{}_noFace_{}.png".format(
+                roomID, studentName, shortuuid.uuid())
             cv2.imwrite(img_name, frame)
             print("{} Capture!!!".format(img_name))
             img_counter += 1
@@ -236,10 +240,10 @@ if studentName is not None:
         cv2.imshow('Head Pose Estimation', image)
 
         if cv2.waitKey(1) & 0xFF == 27:
-            db.collection(u'loggedIn').document(
-                u'{}'.format(studentName)).delete()
+
             break
 
         # print (seconds)
-
+    db.collection(u'camLoggedIn').document(
+        u'{}'.format(roomID)).delete()
     cap.release()
