@@ -143,7 +143,8 @@ function Evidences() {
                       Back
                     </Button>
                     <Button
-                      className="btn btn-primary"
+                      id="evi-btn"
+                      className="btn-primary"
                       onClick={() => setOpen(!open)}
                       aria-controls="collapse-text"
                       aria-expanded={open}
