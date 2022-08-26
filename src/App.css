@@ -19,3 +19,11 @@ Button#finish-button {
   /* padding: 0px 15px; */
   z-index: 1;
 }
+Button#evi-btn {
+  background: green;
+  position: fixed;
+  top: 880px;
+  right: 30px;
+  /* padding: 0px 15px; */
+  /* z-index: 1; */
+}
