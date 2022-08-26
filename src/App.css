@@ -52,6 +52,14 @@
   z-index: 1;
 }
 
+Button#finish-button {
+  position: fixed;
+  top: 120px;
+  right: 30px;
+  /* padding: 0px 15px; */
+  z-index: 1;
+}
+
 .App-container {
   margin-top: 250px;
   position: inherit;
