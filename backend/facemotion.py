@@ -5,7 +5,7 @@ import numpy as np
 import time
 import tkinter as tk
 from tkinter import simpledialog
-# import datetime
+import datetime
 
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -51,7 +51,7 @@ if studentName and roomID is not None:
     # add student name to firestore
     logged_ref = db.collection(u'camLoggedIn').document(u'{}'.format(roomID))
     logged_ref.set({
-        u'studen_name': studentName
+        u'student_name': studentName
     })
 
     img_counter = 0
@@ -140,11 +140,11 @@ if studentName and roomID is not None:
                     #     'Time': P
                     # })
                     action_ref = db.document(
-                        u'camLoggedIn/{}'.format(roomID))
+                        u'rooms/{}/students_join_room/{}'.format(roomID, studentName))
                     action_ref.set({
                         u'activities': firestore.ArrayUnion([{
                             u'action': text,
-                            u'timestamp': P
+                            u'timestamp': datetime.datetime.utcnow()
                         }])
                     }, merge=True)
 
@@ -154,15 +154,15 @@ if studentName and roomID is not None:
                         roomID, studentName, shortuuid.uuid())
                     cv2.imwrite(img_name, frame)
                     print("{} Capture!!!".format(img_name))
-                    img_counter += 1
+                    # img_counter += 1
                     # fileName = img_name
                     # bucket = storage.bucket()
                     # blob = bucket.blob(fileName)
                     # blob.upload_from_filename(fileName)
 
                     # Add images with pyrebase
-                    path_on_cloud = 'images/{}/{}_Left_{}.png'.format(
-                        roomID, studentName, shortuuid.uuid())
+                    path_on_cloud = 'images/{}/{}/{}_Left_{}.png'.format(
+                        roomID, studentName, studentName, shortuuid.uuid())
                     path_local = img_name
                     storage.child(path_on_cloud).put(path_local)
 
@@ -178,11 +178,11 @@ if studentName and roomID is not None:
                     #     # 'timestamp': "time that they turn"
                     # })
                     action_ref = db.document(
-                        u'camLoggedIn/{}'.format(roomID))
+                        u'rooms/{}/students_join_room/{}'.format(roomID, studentName))
                     action_ref.set({
                         u'activities': firestore.ArrayUnion([{
                             u'action': text,
-                            u'timestamp': P
+                            u'timestamp': datetime.datetime.utcnow()
                         }])
                     }, merge=True)
 
@@ -193,13 +193,16 @@ if studentName and roomID is not None:
                     cv2.imwrite(img_name, frame)
                     print("{} Capture!!!".format(img_name))
                     img_counter += 1
-                    fileName = img_name
-                    bucket = storage.bucket()
-                    blob = bucket.blob(fileName)
-                    blob.upload_from_filename(fileName)
+                    # fileName = img_name
+                    # bucket = storage.bucket()
+                    # blob = bucket.blob(fileName)
+                    # blob.upload_from_filename(fileName)
 
-                    # Opt : if you want to make public access from the URL
-                    # blob.make_public()
+                    # Add images with pyrebase
+                    path_on_cloud = 'images/{}/{}/{}_Left_{}.png'.format(
+                        roomID, studentName, studentName, shortuuid.uuid())
+                    path_local = img_name
+                    storage.child(path_on_cloud).put(path_local)
                 else:
 
                     seconds = 0
@@ -232,12 +235,12 @@ if studentName and roomID is not None:
         elif not results.multi_face_landmarks:
             text = "No face detection"
             noface_ref = db.document(
-                u'camLoggedIn/{}'.format(studentName))
+                u'rooms/{}/students_join_room/{}'.format(roomID, studentName))
             P = time.ctime()
             noface_ref.set({
                 u'activities': firestore.ArrayUnion([{
                     u'action': text,
-                    u'timestamp': P
+                    u'timestamp': datetime.datetime.utcnow()
                 }])
             }, merge=True)
 
@@ -247,11 +250,17 @@ if studentName and roomID is not None:
                 roomID, studentName, shortuuid.uuid())
             cv2.imwrite(img_name, frame)
             print("{} Capture!!!".format(img_name))
-            img_counter += 1
-            fileName = img_name
-            bucket = storage.bucket()
-            blob = bucket.blob(fileName)
-            blob.upload_from_filename(fileName)
+            # img_counter += 1
+            # fileName = img_name
+            # bucket = storage.bucket()
+            # blob = bucket.blob(fileName)
+            # blob.upload_from_filename(fileName)
+
+            # Add images with pyrebase
+            path_on_cloud = 'images/{}/{}/{}_Left_{}.png'.format(
+                roomID, studentName, studentName, shortuuid.uuid())
+            path_local = img_name
+            storage.child(path_on_cloud).put(path_local)
 
         cv2.imshow('Head Pose Estimation', image)
 
