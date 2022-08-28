@@ -106,7 +106,7 @@ const SignUp = () => {
                       <Button type="submit" className="btn btn-success">
                         Register
                       </Button>
-                      <Link to="/signup" className="btn btn-primary">
+                      <Link to="/login" className="btn btn-primary">
                         Log in
                       </Link>
                     </div>
