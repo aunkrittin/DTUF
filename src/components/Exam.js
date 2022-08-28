@@ -11,6 +11,55 @@ import { ref, getStorage, uploadString, listAll } from "firebase/storage";
 import { v4 } from "uuid";
 const db = getFirestore(firebaseConfig);
 
+const startCapture = () => {
+  let video = document.querySelector("video");
+  let canvas = (window.canvas = document.querySelector("canvas"));
+  canvas.width = 480;
+  canvas.height = 360;
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  const handleSuccess = (stream) => {
+    window.stream = stream; // make stream available to browser console
+    video.srcObject = stream;
+    let displaySurface = stream
+      .getVideoTracks()[0]
+      .getSettings().displaySurface;
+    if (displaySurface !== "monitor") {
+      stopCapture();
+      console.log(displaySurface);
+      navigator.mediaDevices
+        .getDisplayMedia({ video: true, audio: false })
+        .then(handleSuccess)
+        .catch((err) => {
+          console.log(`error from: other window ${err.message}`);
+          stopCapture();
+        });
+    }
+    stream.getVideoTracks()[0].onended = () => {
+      return startCapture();
+    };
+  };
+  navigator.mediaDevices
+    .getDisplayMedia({ video: true, audio: false })
+    .then(handleSuccess)
+    .catch((err) => {
+      console.log(`error from: cancel ${err.message}`);
+      if (err.message === "Permission denied") {
+        return startCapture();
+      }
+    });
+};
+
+const stopCapture = () => {
+  if (window.stream) {
+    window.stream.getTracks().forEach((track) => {
+      track.stop();
+    });
+    window.stream = null;
+  }
+};
+
 function Exam(props) {
   let navigate = useNavigate();
   const storage = getStorage();
@@ -32,40 +81,6 @@ function Exam(props) {
       // alert("Image uploaded successfully");
       console.log("Uploaded image");
     });
-  };
-
-  const StreamConstraints = {
-    audio: false,
-    video: true,
-  };
-
-  const startCapture = (constraints) => {
-    let video = document.querySelector("video");
-    let canvas = (window.canvas = document.querySelector("canvas"));
-    canvas.width = 480;
-    canvas.height = 360;
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const handleSuccess = (stream) => {
-      window.stream = stream; // make stream available to browser console
-      video.srcObject = stream;
-    };
-    return navigator.mediaDevices
-      .getDisplayMedia(constraints)
-      .then(handleSuccess)
-      .catch((err) => {
-        console.error(`Error:${err}`);
-        return null;
-      });
-  };
-
-  const stopCapture = () => {
-    if (window.stream) {
-      window.stream.getTracks().forEach((track) => {
-        track.stop();
-      });
-      window.stream = null;
-    }
   };
 
   const handleVisibilityChange = async (isVisible) => {
@@ -175,10 +190,9 @@ function Exam(props) {
   }
 
   useEffect(() => {
-    startCapture(StreamConstraints);
+    startCapture({ video: true, audio: false });
     getData();
   }, []);
-
   //const dataDoc =  getDoc(doc(db, "rooms", roomID));
   //   // setRoomdata(dataDoc.data());
   //   console.log(dataDoc);
