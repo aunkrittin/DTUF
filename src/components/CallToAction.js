@@ -10,15 +10,14 @@ function CallToAction() {
           <div className="cta-text">
             <FiVideo />
             <h2>We're DTUF team</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab sint
-              architecto voluptatem velit in est. Veniam dolore accusamus
-              exercitationem iusto, voluptas eum consectetur ipsa tenetur
-              recusandae eligendi quo dolorem maiores!
-            </p>
-            <a href="#" className="cta-btn">
+            <h5>
+              We're students from Walailak university. This project is the final
+              project for us to graduate.
+            </h5>
+            <p>Copyright &copy; 2022. All Rights Reserve</p>
+            {/* <a href="#" className="cta-btn">
               get to know us
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
