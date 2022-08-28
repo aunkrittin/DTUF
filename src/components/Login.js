@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "./Auth";
 import firebaseConfig from "../config";
 import Swal from "sweetalert2";
+import { Button, Container, Card, Row, Col } from "react-bootstrap";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -70,60 +70,68 @@ const Login = () => {
 
   return (
     <>
-      {/* <Navbar bg="dark" variant="dark" sticky="top">
-        <Container>
-          <Navbar.Brand href="/">Don't turn your face!!</Navbar.Brand>
-        </Container>
-      </Navbar> */}
       <div className="container mt-5">
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">
-              Email address
-            </label>
-            <input
-              type="email"
-              name="email"
-              className="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-            />
-            <div id="emailHelp" className="form-text">
-              We'll never share your email with anyone else.
-            </div>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              className="form-control"
-              id="exampleInputPassword1"
-            />
-          </div>
-          <div className="mb-3 form-check">
-            <Link to="/resetpassword" style={{ TextDecoration: "none" }}>
-              Reset password
-            </Link>
-          </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            style={{ marginRight: "5px" }}
-          >
-            Log in
-          </button>
-          <Link
-            to="/signup"
-            className="btn btn-success"
-            style={{ marginLeft: "5px" }}
-          >
-            Sign up
-          </Link>
-        </form>
+        <Container>
+          <Row className="home-main-row">
+            <Col>
+              <Card className="p-5">
+                <Card.Body>
+                  <h1>Login</h1>
+                  <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                      <label
+                        htmlFor="exampleInputEmail1"
+                        className="form-label"
+                      >
+                        Email address
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        className="form-control"
+                        id="exampleInputEmail1"
+                        aria-describedby="emailHelp"
+                      />
+                      <div id="emailHelp" className="form-text">
+                        We'll never share your email with anyone else.
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label
+                        htmlFor="exampleInputPassword1"
+                        className="form-label"
+                      >
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        name="password"
+                        className="form-control"
+                        id="exampleInputPassword1"
+                      />
+                    </div>
+                    <div className="mb-3 form-check">
+                      <Link
+                        to="/resetpassword"
+                        style={{ TextDecoration: "none" }}
+                      >
+                        Reset password
+                      </Link>
+                    </div>
+                    <div className="login-btn">
+                      <Button type="submit" className="btn btn-primary">
+                        Log in
+                      </Button>
+                      <Link to="/signup" className="btn btn-success">
+                        Sign up
+                      </Link>
+                    </div>
+                  </form>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
       </div>
     </>
   );
