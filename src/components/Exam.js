@@ -136,7 +136,7 @@ function Exam(props) {
           },
           { merge: true }
         );
-      }, 1500);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   };
