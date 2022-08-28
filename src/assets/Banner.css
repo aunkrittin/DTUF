@@ -8,6 +8,15 @@
   background-size: cover;
   overflow: hidden;
   background-position-y: -450px;
+  position: relative;
+}
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
 }
 .banner-con {
   display: flex;
@@ -18,6 +27,9 @@
 .banner-text {
   color: #fff;
   text-align: center;
+}
+.banner-text h3 {
+  font-weight: lighter;
 }
 .banner-btn {
   background: #fff;
