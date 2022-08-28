@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
-import { AuthContext } from "../components/Auth";
 import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
