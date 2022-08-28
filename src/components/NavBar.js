@@ -17,7 +17,7 @@ function NavBar() {
       <Navbar collapseOnSelect bg="dark" variant="dark" sticky="top">
         <Container>
           <Navbar.Brand href="/">
-            Don't turn your face!! {""}
+            DTUF {""}
             <FiVideo />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
