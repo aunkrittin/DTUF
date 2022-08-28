@@ -28,13 +28,14 @@ function Student() {
   const joinRoom = async () => {
     try {
       let camLoggedSnap = await getDoc(camLoggedRef);
-      let data = {
-        student_name: studentName,
-      };
-      let camLogData = camLoggedSnap.data({ student_name: studentName });
-      console.log(data.student_name);
-      console.log(camLoggedSnap.data().student_name);
-      if (data.student_name === camLogData.student_name) {
+      let data = studentName;
+
+      const camLogData = camLoggedSnap.data({ student_name: studentName });
+      parseInt(data);
+      parseInt(camLogData);
+      console.log(data);
+      console.log(camLogData.student_name);
+      if (data === camLogData.student_name) {
         const dataDoc = await getDoc(doc(db, "rooms", roomID));
         // console.log("student:" + dataDoc);
         if (dataDoc.exists()) {
@@ -66,6 +67,7 @@ function Student() {
         });
       }
     } catch (error) {
+      // console.log(error);
       Swal.fire({
         title: "Error!",
         text: "Room ID or name are not match please check and try again",
