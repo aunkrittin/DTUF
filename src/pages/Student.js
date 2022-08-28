@@ -103,6 +103,7 @@ function Student() {
                           setroomID(e.target.value);
                         }}
                         defaultValue={handle}
+                        disabled
                       />
                       <br />
                       <label htmlFor="name" className="form-label">
