@@ -9,7 +9,7 @@ function Banner() {
   const navigate = useNavigate();
   let bannerData = {
     title: "Don't turn your face!!",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similiqueperspiciatis iste porro sed, repellendus odit earum accusamus ametsequi, tempore consequatur culpa laboriosam quod! Obcaecati abreprehenderit quo ut at",
+    desc: "This is a website for detecting and preventing cheat. To take the online exam through face detection by using the exam web site on our website.",
   };
 
   function checkCurrentUser() {
@@ -24,14 +24,16 @@ function Banner() {
 
   return (
     <div className="banner-bg">
-      <div className="container">
-        <div className="banner-con">
-          <div className="banner-text">
-            <h1>{bannerData.title}</h1>
-            <p>{bannerData.desc}</p>
-            <Button className="banner-btn" onClick={checkCurrentUser}>
-              Get start with DTUF
-            </Button>
+      <div className="overlay">
+        <div className="container">
+          <div className="banner-con">
+            <div className="banner-text">
+              <h1>{bannerData.title}</h1>
+              <h3>{bannerData.desc}</h3>
+              <Button className="banner-btn" onClick={checkCurrentUser}>
+                Get start with DTUF
+              </Button>
+            </div>
           </div>
         </div>
       </div>
