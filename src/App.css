@@ -22,8 +22,20 @@ Button#finish-button {
 Button#evi-btn {
   background: green;
   position: fixed;
-  top: 880px;
-  right: 30px;
-  /* padding: 0px 15px; */
-  /* z-index: 1; */
+  top: 90%;
+  right: 15px;
+}
+.register-btn {
+  display: flex;
+  justify-content: center;
+}
+.register-btn Button {
+  margin-right: 20px;
+}
+.login-btn {
+  display: flex;
+  justify-content: center;
+}
+.login-btn Button {
+  margin-right: 20px;
 }
