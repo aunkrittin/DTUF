@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Button, Container, Row, Col, Card } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import firebaseConfig from "../config";
 
@@ -71,35 +72,50 @@ const SignUp = () => {
   return (
     <>
       <div className="container mt-5">
-        <h1>Sign Up</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="inputEmail" className="form-label">
-              Email address:
-            </label>
-            <input
-              type="email"
-              name="email"
-              className="form-control"
-              id="inputEmail"
-              aria-describedby="emailHelp"
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="inputPassword" className="form-label">
-              Password:
-            </label>
-            <input
-              type="password"
-              name="password"
-              className="form-control"
-              id="inputPassword"
-            />
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Sign up
-          </button>
-        </form>
+        <Container>
+          <Row className="home-main-row">
+            <Col>
+              <Card className="p-5">
+                <Card.Body>
+                  <h1>Sign Up</h1>
+                  <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                      <label htmlFor="inputEmail" className="form-label">
+                        Email address:
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        className="form-control"
+                        id="inputEmail"
+                        aria-describedby="emailHelp"
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="inputPassword" className="form-label">
+                        Password:
+                      </label>
+                      <input
+                        type="password"
+                        name="password"
+                        className="form-control"
+                        id="inputPassword"
+                      />
+                    </div>
+                    <div className="register-btn">
+                      <Button type="submit" className="btn btn-success">
+                        Register
+                      </Button>
+                      <Link to="/signup" className="btn btn-primary">
+                        Log in
+                      </Link>
+                    </div>
+                  </form>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
       </div>
     </>
   );

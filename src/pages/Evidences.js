@@ -96,9 +96,9 @@ function Evidences() {
       {foundData ? (
         <div className="home-body mt-3">
           <Container>
-            <Row className="home-main-row">
-              <Col>
-                <Card className="p-3">
+            <Row className="justify-content-md-center">
+              <Col xs={12} md={10}>
+                <Card className="p-5">
                   <h1>Evidences</h1>
                   <Card.Body>
                     <Table striped bordered hover size="sm">
@@ -158,8 +158,8 @@ function Evidences() {
           </Container>
           <div className="home-body mt-3">
             <Container>
-              <Row className="home-main-row">
-                <Col>
+              <Row className="justify-content-md-center">
+                <Col xs={12} md={10}>
                   <Collapse in={open}>
                     <div id="collapse-text">
                       <Card className="p-3">
@@ -205,8 +205,8 @@ function Evidences() {
       ) : (
         <div className="home-body mt-3">
           <Container>
-            <Row className="home-main-row">
-              <Col>
+            <Row className="justify-content-md-center">
+              <Col xs={12} md={10}>
                 <Card className="p-3">
                   <h1>Evidences</h1>
                   <Card.Body>
@@ -234,8 +234,8 @@ function Evidences() {
           </Container>
           <div className="home-body mt-3">
             <Container>
-              <Row className="home-main-row">
-                <Col>
+              <Row className="justify-content-md-center">
+                <Col xs={12} md={10}>
                   <Card className="p-3">
                     <h1>Images</h1>
                     <Card.Body>
