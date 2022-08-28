@@ -15,11 +15,6 @@ function Student() {
   const [studentName, setStudentName] = useState();
   const [roomID, setroomID] = useState();
   const camLoggedRef = doc(db, "camLoggedIn", `${roomID}`);
-  const studentsDocRef = doc(
-    db,
-    `rooms/${roomID}/students_join_room`,
-    `${studentName}`
-  );
 
   useEffect(() => {
     setroomID(handle);
@@ -27,12 +22,16 @@ function Student() {
 
   const joinRoom = async () => {
     try {
+      const studentsDocRef = doc(
+        db,
+        `rooms/${roomID}/students_join_room`,
+        `${studentName}`
+      );
       let camLoggedSnap = await getDoc(camLoggedRef);
       let data = studentName;
 
       const camLogData = camLoggedSnap.data({ student_name: studentName });
-      parseInt(data);
-      parseInt(camLogData);
+
       console.log(data);
       console.log(camLogData.student_name);
       if (data === camLogData.student_name) {
