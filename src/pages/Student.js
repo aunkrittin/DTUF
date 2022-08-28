@@ -76,74 +76,58 @@ function Student() {
     }
   };
 
-  const { currentUser } = useContext(AuthContext);
-
   // if (!currentUser) {
   //   return <Navigate to="/login" />;
   // }
 
   return (
     <>
-      {currentUser ? (
-        <div className="home-body mt-5">
-          {!joined && (
-            <Container>
-              <Row className="home-main-row">
-                <Col>
-                  <Card className="p-5">
-                    <Card.Body>
-                      <label htmlFor="name" className="form-label">
-                        Room ID:
-                      </label>
-                      <br />
-                      <input
-                        type="name"
-                        className="form-control"
-                        placeholder="Enter room name"
-                        onChange={(e) => {
-                          setroomID(e.target.value);
-                        }}
-                        defaultValue={handle}
-                        disabled
-                      />
-                      <br />
-                      <label htmlFor="name" className="form-label">
-                        Student Name:
-                      </label>
-                      <br />
-                      <input
-                        type="name"
-                        className="form-control"
-                        placeholder="Enter name"
-                        onChange={(e) => {
-                          setStudentName(e.target.value);
-                        }}
-                      />
-                      <br />
-                      <Button onClick={joinRoom} className="btn btn-success">
-                        Enter
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </Container>
-          )}
-          {joined && <Exam name={studentName} />}
-        </div>
-      ) : (
-        Swal.fire({
-          title: "Error!",
-          text: "Please logout before join the room",
-          icon: "error",
-          confirmButtonText: "Close",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location = "http://localhost:3000/dashboard";
-            // return <Navigate to="/dashboard" />;
-          }
-        })
-      )}
+      <div className="home-body mt-5">
+        {!joined && (
+          <Container>
+            <Row className="home-main-row">
+              <Col>
+                <Card className="p-5">
+                  <Card.Body>
+                    <label htmlFor="name" className="form-label">
+                      Room ID:
+                    </label>
+                    <br />
+                    <input
+                      type="name"
+                      className="form-control"
+                      placeholder="Enter room name"
+                      onChange={(e) => {
+                        setroomID(e.target.value);
+                      }}
+                      defaultValue={handle}
+                      disabled
+                    />
+                    <br />
+                    <label htmlFor="name" className="form-label">
+                      Student Name:
+                    </label>
+                    <br />
+                    <input
+                      type="name"
+                      className="form-control"
+                      placeholder="Enter name"
+                      onChange={(e) => {
+                        setStudentName(e.target.value);
+                      }}
+                    />
+                    <br />
+                    <Button onClick={joinRoom} className="btn btn-success">
+                      Enter
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        )}
+        {joined && <Exam name={studentName} />}
+      </div>
     </>
   );
 }
