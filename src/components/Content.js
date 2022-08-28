@@ -1,6 +1,5 @@
 import React from "react";
 import "../assets/Content.css";
-import { Wave } from "react-animated-text";
 
 function Content() {
   return (
