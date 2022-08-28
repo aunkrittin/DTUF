@@ -64,7 +64,7 @@ const Login = () => {
       icon: "success",
       text: "You have successfully logged in",
     }).then(() => {
-      navigate("/", { replace: true });
+      navigate("/results", { replace: true });
     });
   }
 
