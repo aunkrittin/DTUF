@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import Container from "react-bootstrap/Container";
+import { Container } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { AuthContext } from "./Auth";
@@ -8,6 +9,7 @@ import { FiVideo } from "react-icons/fi";
 
 function NavBar() {
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   // if (!currentUser) {
   //   return <Navigate to="/login" />;
   // }
@@ -34,7 +36,14 @@ function NavBar() {
               <Nav>
                 <Nav.Link
                   className="nav-link"
-                  onClick={() => firebaseConfig.auth().signOut()}
+                  onClick={() =>
+                    firebaseConfig
+                      .auth()
+                      .signOut()
+                      .then(() => {
+                        navigate("/", { replace: true });
+                      })
+                  }
                 >
                   Logout
                 </Nav.Link>
