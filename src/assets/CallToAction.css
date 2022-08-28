@@ -27,7 +27,12 @@
   color: #fff;
   height: 500px;
 }
-
+.cta-text h5 {
+  font-weight: lighter;
+}
+.cta-text p {
+  font-weight: lighter;
+}
 .FiVideo {
   font-size: 2rem;
   margin-bottom: 0.5rem;
