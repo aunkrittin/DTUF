@@ -1,5 +1,6 @@
 import React from "react";
 import "../assets/Content.css";
+import { Wave } from "react-animated-text";
 
 function Content() {
   return (
@@ -14,10 +15,11 @@ function Content() {
         <div className="content-r">
           <h2>Forward</h2>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique
-            perspiciatis iste porro sed, repellendus odit earum accusamus amet
-            sequi, tempore consequatur culpa laboriosam quod! Obcaecati ab
-            reprehenderit quo ut at!
+            Forward, or straight, is normal for the test taker to be in this
+            position (NumPy must be between -10 and 10 on the horizontal or
+            y-axis). If not in this position, the website will be considered
+            cheat. or considered to be turning left and turning right In any
+            case, the website will record and deduct points.
           </p>
         </div>
       </section>
@@ -25,10 +27,11 @@ function Content() {
         <div className="content-r">
           <h2>Turn Right</h2>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique
-            perspiciatis iste porro sed, repellendus odit earum accusamus amet
-            sequi, tempore consequatur culpa laboriosam quod! Obcaecati ab
-            reprehenderit quo ut at!
+            Turning to the right occurs only when the test taker is facing the
+            right side. Or when the website detects that our page is actually
+            facing (the website will set the NumPy value with the y-axis as a
+            determinant. In this case, if the y-axis NumPy is greater than or
+            equal to 10 assumed to be facing right)
           </p>
         </div>
         <div className="content-l">
@@ -48,10 +51,11 @@ function Content() {
         <div className="content-r">
           <h2>Turn Left</h2>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique
-            perspiciatis iste porro sed, repellendus odit earum accusamus amet
-            sequi, tempore consequatur culpa laboriosam quod! Obcaecati ab
-            reprehenderit quo ut at!
+            Turning to the left occurs only when the test taker is facing to the
+            left. Or when the website detects that our page is actually facing
+            (the website will set the NumPy value with the y-axis as a
+            determinant. In this case, if the y-axis NumPy is less than or equal
+            to -10 assumed to turn left)
           </p>
         </div>
       </section>
