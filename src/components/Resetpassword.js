@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Container, Card, Row, Col, Button } from "react-bootstrap";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
@@ -33,42 +34,47 @@ function Results() {
 
   return (
     <>
-      {/* <Navbar bg="dark" variant="dark" sticky="top">
-        <Container>
-          <Navbar.Brand href="/">Don't turn your face!!</Navbar.Brand>
-        </Container>
-      </Navbar> */}
       <div className="container mt-5">
-        <h1>Reset password</h1>
-        <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">
-            Email:
-          </label>
-          <input
-            type="email"
-            name="email"
-            className="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </div>
-        <button
-          onClick={() => navigate(-1)}
-          className="btn btn-success"
-          style={{ marginRight: "5px" }}
-        >
-          Back
-        </button>
-        <button
-          className="btn btn-primary"
-          style={{ marginLeft: "5px" }}
-          onClick={resetPassword}
-        >
-          Reset
-        </button>
+        <Container>
+          <Row className="home-main-row">
+            <Col>
+              <Card className="p-5">
+                <Card.Body>
+                  <h1>Reset password</h1>
+                  <div className="mb-3">
+                    <label htmlFor="exampleInputEmail1" className="form-label">
+                      Email:
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      className="form-control"
+                      id="exampleInputEmail1"
+                      aria-describedby="emailHelp"
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <button
+                    onClick={() => navigate(-1)}
+                    className="btn btn-success"
+                    style={{ marginRight: "5px" }}
+                  >
+                    Back
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    style={{ marginLeft: "5px" }}
+                    onClick={resetPassword}
+                  >
+                    Reset
+                  </button>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
       </div>
     </>
   );
