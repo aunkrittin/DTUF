@@ -142,7 +142,8 @@ function Exam(props) {
         if (hours === 0 && minutes === 0 && sec === 0) {
           const forceFinish = async () => {
             listAll(imageListRef).then(async (res) => {
-              let tScore = 100 - res.items.length;
+              let tScore = 100;
+              let resultTScore = tScore - res.items.length;
               const studentsDocRef = doc(
                 db,
                 `rooms/${roomID}/students_join_room`,
@@ -155,7 +156,7 @@ function Exam(props) {
                     action: "Leave",
                     timestamp: new Date(),
                   }),
-                  trust_score: tScore,
+                  trust_score: resultTScore,
                 },
                 { merge: true }
               );
@@ -196,7 +197,9 @@ function Exam(props) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         listAll(imageListRef).then(async (res) => {
-          let tScore = 100 - res.items.length;
+          let tScore = 100;
+          let resultTScore = tScore - res.items.length;
+          console.log(`This is Trust Score: ${resultTScore}`);
           const studentsDocRef = doc(
             db,
             `rooms/${roomID}/students_join_room`,
@@ -209,12 +212,11 @@ function Exam(props) {
                 action: "Leave",
                 timestamp: new Date(),
               }),
-              trust_score: tScore,
+              trust_score: resultTScore,
             },
             { merge: true }
           );
         });
-        // Swal.fire("Deleted!", "Your test has been deleted.", "success");
         setFinished("Hello");
         stopCapture();
       }
