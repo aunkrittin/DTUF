@@ -27,13 +27,16 @@ const startCapture = () => {
       .getSettings().displaySurface;
     if (displaySurface !== "monitor") {
       stopCapture();
-      console.log(displaySurface);
+      console.log(`Now Select ${displaySurface}`);
       navigator.mediaDevices
         .getDisplayMedia({ video: true, audio: false })
         .then(handleSuccess)
         .catch((err) => {
-          console.log(`error from: other window ${err.message}`);
           stopCapture();
+          console.log(`error from: other window ${err.message}`);
+          if (err.message === "Permission denied") {
+            return startCapture();
+          }
         });
     }
     stream.getVideoTracks()[0].onended = () => {
