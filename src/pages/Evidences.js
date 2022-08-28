@@ -170,12 +170,13 @@ function Evidences() {
                               <img
                                 style={{
                                   display: "block",
-                                  margin: "auto",
+                                  marginLeft: "auto",
+                                  marginRight: "auto",
                                   marginBottom: "30px",
-                                  justifyContent: "center",
+                                  width: "60%",
                                 }}
-                                width="900"
-                                height="600"
+                                width="700"
+                                height="400"
                                 src={url}
                               />
                             );
@@ -185,10 +186,13 @@ function Evidences() {
                               <img
                                 style={{
                                   display: "block",
-                                  margin: "auto",
+                                  marginLeft: "auto",
+                                  marginRight: "auto",
                                   marginBottom: "30px",
-                                  justifyContent: "center",
+                                  width: "90%",
                                 }}
+                                width="900"
+                                height="600"
                                 src={url}
                               />
                             );
