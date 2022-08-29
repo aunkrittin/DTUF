@@ -39,9 +39,83 @@ Button#evi-btn {
 .login-btn Button {
   margin-right: 20px;
 }
-.container-auth p {
+/* .container-auth p {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+} */
+
+.container-auth {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loader {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  border: 5px solid #f44336;
+  border-radius: 50%;
+  animation: right 2s linear infinite;
+}
+.loader::after,
+.loader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  width: 200px;
+  height: 200px;
+  border: 5px #ff5722;
+  border-style: solid dotted;
+  border-radius: 50%;
+  animation: left 1s linear infinite;
+}
+.loader::before {
+  width: 100px;
+  height: 100px;
+  border: 5px dotted #f35a2c;
+  animation: right 1s linear infinite;
+}
+.loader span {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  width: 70px;
+  height: 70px;
+  background-color: #ff5722;
+  border-radius: 50%;
+  animation: span-rotate 1s linear infinite alternate;
+}
+@keyframes right {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+@keyframes left {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(-1turn);
+  }
+}
+@keyframes span-rotate {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
