@@ -2,9 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/NavBar";
-// import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Student from "./pages/Student";
@@ -15,8 +13,6 @@ import Evidences from "./pages/Evidences";
 import Resetpassword from "./components/Resetpassword";
 import { AuthProvider } from "./components/Auth";
 import "./App.css";
-// import Login from "./pages/Login";
-// import Register from "./pages/Register.js";
 
 function App() {
   return (
@@ -28,7 +24,6 @@ function App() {
             {/* <Route path="/" element={<Home />} /> */}
             {/* <Route path="/forms" element={<Forms />} /> */}
             <Route path="/" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/student/:handle" element={<Student />} />
