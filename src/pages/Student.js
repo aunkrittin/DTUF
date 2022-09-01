@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
-import {
-  doc,
-  setDoc,
-  arrayUnion,
-  collection,
-  getDoc,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
+import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
 import Exam from "../components/Exam";
@@ -43,9 +34,7 @@ function Student() {
         `rooms/${roomID}/students_join_room`,
         `${studentName}`
       );
-      let data = {
-        student_name: studentName,
-      };
+
       // const q = query(camLoggedRef, where("student_name", "==", `${data}`));
       const querySnapshot = await getDoc(camLoggedRef);
       const camLogData = querySnapshot.data();
@@ -60,7 +49,7 @@ function Student() {
             studentsDocRef,
             {
               activities: arrayUnion({
-                action: "Join",
+                action: "Join the room",
                 timestamp: new Date(),
               }),
             },
