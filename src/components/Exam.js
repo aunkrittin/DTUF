@@ -75,7 +75,6 @@ function Exam(props) {
   const studentName = props.name;
   const { handle } = useParams();
   const roomID = handle;
-  const [finihed, setFinished] = useState();
   const [gformLink, setgformLink] = useState("");
   const [timeDisplay, setTimeDisplay] = useState("00:00:00");
   const imageListRef = ref(storage, `images/${roomID}/${studentName}`);
@@ -230,7 +229,6 @@ function Exam(props) {
                 },
                 { merge: true }
               );
-              setFinished("Hello");
             });
             ////////////////////////////////
           };
@@ -287,8 +285,9 @@ function Exam(props) {
             { merge: true }
           );
         });
-        setFinished("Hello");
         stopCapture();
+        navigate("/", { replace: true });
+        window.location.reload();
       }
     });
   };
@@ -296,40 +295,36 @@ function Exam(props) {
   return (
     <>
       <PageVisibility onChange={handleVisibilityChange}>
-        {!finihed ? (
-          <div className="home-body mt-0">
-            <Button
-              onClick={finishTest}
-              className="btn btn-success"
-              id="finish-button"
-            >
-              Finish
-            </Button>
-            <video playsInline autoPlay hidden></video>
-            <canvas hidden></canvas>
-            <h1 className="clock">{timeDisplay}</h1>
-            <Container>
-              <Row className="home-main-row">
-                <Col>
-                  <Card className="">
-                    <Card.Body>
-                      <iframe
-                        allow="display-capture"
-                        src={gformLink}
-                        width="100%"
-                        height="750"
-                      ></iframe>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </Container>
+        <div className="home-body mt-0">
+          <Button
+            onClick={finishTest}
+            className="btn btn-success"
+            id="finish-button"
+          >
+            Finish
+          </Button>
+          <video playsInline autoPlay hidden></video>
+          <canvas hidden></canvas>
+          <h1 className="clock">{timeDisplay}</h1>
+          <Container>
+            <Row className="home-main-row">
+              <Col>
+                <Card className="">
+                  <Card.Body>
+                    <iframe
+                      allow="display-capture"
+                      src={gformLink}
+                      width="100%"
+                      height="750"
+                    ></iframe>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
 
-            {/* <Camera /> */}
-          </div>
-        ) : (
-          <Navigate to="/" />
-        )}
+          {/* <Camera /> */}
+        </div>
       </PageVisibility>
     </>
   );
