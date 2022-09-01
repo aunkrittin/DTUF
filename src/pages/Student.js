@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
-import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  arrayUnion,
+  collection,
+  getDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import firebaseConfig from "../config";
 import { getFirestore } from "@firebase/firestore";
 import Exam from "../components/Exam";
@@ -13,7 +22,8 @@ function Student() {
   const [joined, setJoined] = useState();
   const [studentName, setStudentName] = useState();
   const [roomID, setroomID] = useState();
-  const camLoggedRef = doc(db, "camLoggedIn", `${roomID}`);
+
+  // const camlogRef = collection(db, "camLoggedIn");
 
   useEffect(() => {
     setroomID(handle);
@@ -21,19 +31,28 @@ function Student() {
 
   const joinRoom = async () => {
     try {
+      const camLoggedRef = doc(
+        db,
+        "camLoggedIn",
+        `${roomID}`,
+        `logged_in`,
+        `${studentName}`
+      );
       const studentsDocRef = doc(
         db,
         `rooms/${roomID}/students_join_room`,
         `${studentName}`
       );
-      let camLoggedSnap = await getDoc(camLoggedRef);
-      let data = studentName;
-
-      const camLogData = camLoggedSnap.data({ student_name: studentName });
-
-      console.log(data);
-      console.log(camLogData.student_name);
-      if (data === camLogData.student_name) {
+      let data = {
+        student_name: studentName,
+      };
+      // const q = query(camLoggedRef, where("student_name", "==", `${data}`));
+      const querySnapshot = await getDoc(camLoggedRef);
+      const camLogData = querySnapshot.data();
+      // if (querySnapshot.data() === undefined) {
+      //   console.log("data not matched");
+      // }
+      if (camLogData !== undefined) {
         const dataDoc = await getDoc(doc(db, "rooms", roomID));
         // console.log("student:" + dataDoc);
         if (dataDoc.exists()) {
@@ -65,7 +84,7 @@ function Student() {
         });
       }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       Swal.fire({
         title: "Error!",
         text: "Room ID or name are not match please check and try again",
