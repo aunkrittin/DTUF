@@ -36,15 +36,16 @@ function Evidences() {
   const faceListRef = ref(storage, ``);
   const [imageList, setImageList] = useState([]);
   const imageListRef = ref(storage, `images/${roomID}/${studentName}`);
-  const [imageFound, setImageFound] = useState("test");
   const [open, setOpen] = useState(false);
 
   async function getEviData() {
     try {
       const docSnap = await getDoc(studentEviCollectionRef);
       let data = docSnap.data();
-      if (data.activities.length === 0) {
-        return console.log("Not found data");
+      console.log(data.activities);
+      if (data.activities === undefined) {
+        console.log("Not found data");
+        return setFoundData(false);
       } else {
         setEviData(data);
         setFoundData(true);
@@ -68,14 +69,13 @@ function Evidences() {
     listAll(imageListRef).then((response) => {
       // console.log(response.items.length);
       if (response.items.length === 0) {
-        return console.log("Image not found");
+        // return console.log("Image not found");
       } else {
         response.items.forEach((item) => {
           getDownloadURL(item).then((url) => {
             setImageList((prev) => [...prev, url]);
           });
         });
-        setImageFound(true);
       }
     });
   }
@@ -211,25 +211,34 @@ function Evidences() {
           <Container>
             <Row className="justify-content-md-center">
               <Col xs={12} md={10}>
-                <Card className="p-3">
+                <Card className="p-5">
                   <h1>Evidences</h1>
                   <Card.Body>
                     <Table striped bordered hover size="sm">
                       <thead>
                         <tr>
-                          <th>Visible</th>
-                          <th>Hidden</th>
+                          <th>Actions</th>
+                          <th>Time</th>
                         </tr>
                       </thead>
-                      {/* <tbody></tbody> */}
                     </Table>
-                    <h1>Evidences Not Found</h1>
+                    <h3>No Actions found</h3>
+                    <br />
                     <Button
                       onClick={() => navigate(-1)}
                       className="btn btn-danger"
                       style={{ marginRight: "5px" }}
                     >
                       Back
+                    </Button>
+                    <Button
+                      id="evi-btn"
+                      className="btn-primary"
+                      onClick={() => setOpen(!open)}
+                      aria-controls="collapse-text"
+                      aria-expanded={open}
+                    >
+                      Images evidence
                     </Button>
                   </Card.Body>
                 </Card>
@@ -240,12 +249,16 @@ function Evidences() {
             <Container>
               <Row className="justify-content-md-center">
                 <Col xs={12} md={10}>
-                  <Card className="p-3">
-                    <h1>Images</h1>
-                    <Card.Body>
-                      <h1>Images not found</h1>
-                    </Card.Body>
-                  </Card>
+                  <Collapse in={open}>
+                    <div id="collapse-text">
+                      <Card className="p-3">
+                        <h1>Images</h1>
+                        <Card.Body>
+                          <h3>No images found</h3>
+                        </Card.Body>
+                      </Card>
+                    </div>
+                  </Collapse>
                 </Col>
               </Row>
             </Container>
