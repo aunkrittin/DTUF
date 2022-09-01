@@ -286,8 +286,11 @@ function Exam(props) {
           );
         });
         stopCapture();
-        navigate("/", { replace: true });
-        window.location.reload();
+        const timer = setTimeout(async () => {
+          navigate("/", { replace: true });
+          window.location.reload();
+        }, 1000);
+        return () => clearTimeout(timer);
       }
     });
   };
