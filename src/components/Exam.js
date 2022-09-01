@@ -102,31 +102,34 @@ function Exam(props) {
         `${studentName}`
       );
       // const querySnapshot = await getDoc(camLoggedRef);
-      onSnapshot(camLoggedRef, (doc) => {
-        console.log("Current Data:", doc.data());
-        if (doc.data() == undefined) {
+      onSnapshot(camLoggedRef, (camDoc) => {
+        console.log("Current Data:", camDoc.data());
+        if (camDoc.data() === undefined) {
           Swal.fire({
             title: "Error!",
             text: "Please open your camera",
             icon: "error",
             confirmButtonText: "Close",
-          }).then(async () => {
-            const studentsDocRef = doc(
-              db,
-              `rooms/${roomID}/students_join_room`,
-              `${studentName}`
-            );
-            await setDoc(
-              studentsDocRef,
-              {
-                activities: arrayUnion({
-                  action: "Leave",
-                  timestamp: new Date(),
-                }),
-              },
-              { merge: true }
-            );
-            window.location = `/student/${roomID}`;
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              const studentsDocRef = doc(
+                db,
+                `rooms/${roomID}/students_join_room`,
+                `${studentName}`
+              );
+              await setDoc(
+                studentsDocRef,
+                {
+                  activities: arrayUnion({
+                    action: "Force leave the room because close camera",
+                    timestamp: new Date(),
+                  }),
+                },
+                { merge: true }
+              );
+              stopCapture();
+              window.location = `/student/${roomID}`;
+            }
           });
         }
       });
@@ -220,7 +223,7 @@ function Exam(props) {
                 studentsDocRef,
                 {
                   activities: arrayUnion({
-                    action: "Leave",
+                    action: "Force leave the room because time up",
                     timestamp: new Date(),
                   }),
                   trust_score: resultTScore,
@@ -276,7 +279,7 @@ function Exam(props) {
             studentsDocRef,
             {
               activities: arrayUnion({
-                action: "Leave",
+                action: "Leave the room by normal",
                 timestamp: new Date(),
               }),
               trust_score: resultTScore,
