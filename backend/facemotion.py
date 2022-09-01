@@ -50,11 +50,6 @@ if studentName and roomID is not None:
 
     # add student name to firestore
     # logged_ref = db.collection(u'camLoggedIn').document(u'{}'.format(roomID))
-    logged_ref = db.document(
-        u'camLoggedIn/{}/logged_in/{}'.format(roomID, studentName))
-    logged_ref.set({
-        u'student_name': studentName
-    })
 
     img_counter = 0
 
@@ -77,6 +72,11 @@ if studentName and roomID is not None:
     cap = cv2.VideoCapture(0)
 
     while (cap.isOpened()):
+        logged_ref = db.document(
+            u'camLoggedIn/{}/logged_in/{}'.format(roomID, studentName))
+        logged_ref.set({
+            u'student_name': studentName
+        })
         success, image = cap.read()
 
         start = time.time()
