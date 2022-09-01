@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import firebaseConfig from "../config";
 import { Container, Card, Row, Col, Button } from "react-bootstrap";
 // import Camera from "./Camera";
-import { doc, setDoc, arrayUnion, getDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  arrayUnion,
+  getDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { getFirestore } from "@firebase/firestore";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -85,6 +91,49 @@ function Exam(props) {
       console.log("Uploaded image");
     });
   };
+
+  async function checkCamOpen() {
+    try {
+      const camLoggedRef = doc(
+        db,
+        "camLoggedIn",
+        `${roomID}`,
+        `logged_in`,
+        `${studentName}`
+      );
+      // const querySnapshot = await getDoc(camLoggedRef);
+      onSnapshot(camLoggedRef, (doc) => {
+        console.log("Current Data:", doc.data());
+        if (doc.data() == undefined) {
+          Swal.fire({
+            title: "Error!",
+            text: "Please open your camera",
+            icon: "error",
+            confirmButtonText: "Close",
+          }).then(async () => {
+            const studentsDocRef = doc(
+              db,
+              `rooms/${roomID}/students_join_room`,
+              `${studentName}`
+            );
+            await setDoc(
+              studentsDocRef,
+              {
+                activities: arrayUnion({
+                  action: "Leave",
+                  timestamp: new Date(),
+                }),
+              },
+              { merge: true }
+            );
+            window.location = `/student/${roomID}`;
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handleVisibilityChange = async (isVisible) => {
     let video = document.querySelector("video");
@@ -195,6 +244,7 @@ function Exam(props) {
   useEffect(() => {
     startCapture({ video: true, audio: false });
     getData();
+    checkCamOpen();
   }, []);
   //const dataDoc =  getDoc(doc(db, "rooms", roomID));
   //   // setRoomdata(dataDoc.data());
